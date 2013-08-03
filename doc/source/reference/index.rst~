@@ -1,0 +1,27 @@
+=========
+Reference
+=========
+
+:Release: |version|
+:Date: |today|
+
+Functions
+---------
+
+.. automodule::  nxtools.planarity.planarity_functions
+   :members:
+
+NetworkX Interface
+------------------
+.. automodule::  nxtools.planarity.planarity_networkx
+   :members:
+
+
+Wrapper Class
+-------------
+
+.. autoclass::  nxtools.planarity.PGraph
+
+.. automethod:: ascii
+
+
