@@ -1,8 +1,6 @@
 import os
 import sys
 
-# use setuptools with hack to build .c files with Cython
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "fake_pyrex"))
 import setuptools
 from setuptools import setup
 
@@ -30,6 +28,8 @@ classifiers = [
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.1',
         'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.2',
+        'Programming Language :: Python :: 3.3',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Scientific/Engineering :: Mathematics',
@@ -54,11 +54,11 @@ setup(
                              sourcefiles,
                              include_dirs=['planarity/src/'],
                              )],
-    version          = '0.3',
+    version          = '0.3.1',
     url = 'https://github.com/hagberg/planarity/',
-    download_url='https://pypi',
+    download_url='https://pypi.python.org/pypi/planarity',
     package_data = {'planarity':['tests/*.py']},
-        install_requires=['networkx','setuptools'],
+        install_requires=['setuptools'],
         test_suite = 'nose.collector', 
         tests_require = ['nose >= 0.10.1'] ,
         zip_safe = False
