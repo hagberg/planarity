@@ -1,20 +1,25 @@
 /*
 Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
+Copyright (c) 1997-2012, John M. Boyer
 All rights reserved. Includes a reference implementation of the following:
 
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
+* John M. Boyer. "Subgraph Homeomorphism via the Edge Addition Planarity Algorithm".
+  Journal of Graph Algorithms and Applications, Vol. 16, no. 2, pp. 381-410, 2012.
+  http://www.jgaa.info/16/268.html
 
 * John M. Boyer. "A New Method for Efficiently Generating Planar Graph
   Visibility Representations". In P. Eades and P. Healy, editors,
   Proceedings of the 13th International Conference on Graph Drawing 2005,
   Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
+
+* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
+  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
+  Vol. 8, No. 3, pp. 241-273, 2004.
+  http://www.jgaa.info/08/91.html
+
+* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
+  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
+  University of Victoria, 2001.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -302,15 +307,15 @@ int  _ReadLEDAGraph(graphP theGraph, FILE *Infile)
     fgets(Line, 255, Infile);
     fgets(Line, 255, Infile);
 
-    /* Read the number of vertices, then skip that many more lines. */
+    /* Read the number of vertices N, initialize the graph, then skip N. */
     fgets(Line, 255, Infile);
     sscanf(Line, " %d", &N);
+
+    if (gp_InitGraph(theGraph, N) != OK)
+         return NOTOK;
+
     for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
         fgets(Line, 255, Infile);
-
-    /* Initialize the graph */
-     if (gp_InitGraph(theGraph, N) != OK)
-          return NOTOK;
 
     /* Read the number of edges */
     fgets(Line, 255, Infile);

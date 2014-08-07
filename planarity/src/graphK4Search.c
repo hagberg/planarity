@@ -1,20 +1,25 @@
 /*
 Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
+Copyright (c) 1997-2012, John M. Boyer
 All rights reserved. Includes a reference implementation of the following:
 
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
+* John M. Boyer. "Subgraph Homeomorphism via the Edge Addition Planarity Algorithm".
+  Journal of Graph Algorithms and Applications, Vol. 16, no. 2, pp. 381-410, 2012.
+  http://www.jgaa.info/16/268.html
 
 * John M. Boyer. "A New Method for Efficiently Generating Planar Graph
   Visibility Representations". In P. Eades and P. Healy, editors,
   Proceedings of the 13th International Conference on Graph Drawing 2005,
   Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
+
+* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
+  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
+  Vol. 8, No. 3, pp. 241-273, 2004.
+  http://www.jgaa.info/08/91.html
+
+* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
+  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
+  University of Victoria, 2001.
 
 Redistribution and use in source and binary forms, with or without modification,
 are permitted provided that the following conditions are met:
@@ -54,19 +59,19 @@ extern int K4SEARCH_ID;
 extern void _InitIsolatorContext(graphP theGraph);
 extern void _ClearVisitedFlags(graphP);
 extern int  _ClearVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
-extern int  _ClearVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
-extern void _ClearVisitedFlagsInUnembeddedEdges(graphP theGraph);
+//extern int  _ClearVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
+//extern void _ClearVisitedFlagsInUnembeddedEdges(graphP theGraph);
 extern int  _ClearVertexTypeInBicomp(graphP theGraph, int BicompRoot);
-extern int  _DeleteUnmarkedEdgesInBicomp(graphP theGraph, int BicompRoot);
+//extern int  _DeleteUnmarkedEdgesInBicomp(graphP theGraph, int BicompRoot);
 extern int  _ComputeArcType(graphP theGraph, int a, int b, int edgeType);
 extern int  _SetEdgeType(graphP theGraph, int u, int v);
 
 extern int  _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int  _JoinBicomps(graphP theGraph);
-extern void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY);
+//extern void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY);
 extern int  _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns);
 extern int  _OrientVerticesInEmbedding(graphP theGraph);
-extern void _InvertVertex(graphP theGraph, int V);
+//extern void _InvertVertex(graphP theGraph, int V);
 extern int  _ClearVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 extern int  _SetVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 extern int  _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x);
@@ -82,7 +87,7 @@ extern int  _AddAndMarkEdge(graphP theGraph, int ancestor, int descendant);
 extern int  _DeleteUnmarkedVerticesAndEdges(graphP theGraph);
 
 extern int  _IsolateOuterplanarityObstructionA(graphP theGraph);
-extern int  _IsolateOuterplanarityObstructionB(graphP theGraph);
+//extern int  _IsolateOuterplanarityObstructionB(graphP theGraph);
 extern int  _IsolateOuterplanarityObstructionE(graphP theGraph);
 
 extern void _K4Search_InitEdgeRec(K4SearchContext *context, int e);
@@ -120,7 +125,7 @@ int  _K4_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K4SearchContext *context, 
 int  _K4_RestoreReducedPath(graphP theGraph, K4SearchContext *context, int e);
 int  _K4_RestoreAndOrientReducedPaths(graphP theGraph, K4SearchContext *context);
 
-int _MarkEdge(graphP theGraph, int x, int y);
+//int _MarkEdge(graphP theGraph, int x, int y);
 
 /****************************************************************************
  _SearchForK4InBicomp()
