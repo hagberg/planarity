@@ -1,0 +1,59 @@
+K 25
+svn:wc:ra_dav:version-url
+V 31
+/svn/!svn/ver/384/trunk/c/nauty
+END
+nauty.c
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/43/trunk/c/nauty/nauty.c
+END
+outproc.h
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/254/trunk/c/nauty/outproc.h
+END
+testFramework.h
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/253/trunk/c/nauty/testFramework.h
+END
+makeg.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/264/trunk/c/nauty/makeg.c
+END
+nauty.h
+K 25
+svn:wc:ra_dav:version-url
+V 38
+/svn/!svn/ver/55/trunk/c/nauty/nauty.h
+END
+naututil.h
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/43/trunk/c/nauty/naututil.h
+END
+outproc.c
+K 25
+svn:wc:ra_dav:version-url
+V 41
+/svn/!svn/ver/384/trunk/c/nauty/outproc.c
+END
+nautil.c
+K 25
+svn:wc:ra_dav:version-url
+V 39
+/svn/!svn/ver/43/trunk/c/nauty/nautil.c
+END
+testFramework.c
+K 25
+svn:wc:ra_dav:version-url
+V 47
+/svn/!svn/ver/259/trunk/c/nauty/testFramework.c
+END
