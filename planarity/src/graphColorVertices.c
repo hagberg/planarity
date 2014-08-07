@@ -55,7 +55,7 @@ extern int COLORVERTICES_ID;
 #include "graph.h"
 
 #include <string.h>
-#include <malloc.h>
+#include <stdlib.h>
 #include <stdio.h>
 
 extern void _ClearVertexVisitedFlags(graphP theGraph, int);
