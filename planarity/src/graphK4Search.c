@@ -1,45 +1,7 @@
 /*
-Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
-All rights reserved. Includes a reference implementation of the following:
-
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
-
-* John M. Boyer. "A New Method for Efficiently Generating Planar Graph
-  Visibility Representations". In P. Eades and P. Healy, editors,
-  Proceedings of the 13th International Conference on Graph Drawing 2005,
-  Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice, this
-  list of conditions and the following disclaimer in the documentation and/or
-  other materials provided with the distribution.
-
-* Neither the name of the Planarity-Related Graph Algorithms Project nor the names
-  of its contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Copyright (c) 1997-2015, John M. Boyer
+All rights reserved.
+See the LICENSE.TXT file for licensing information.
 */
 
 #include "graphK4Search.h"
@@ -54,19 +16,19 @@ extern int K4SEARCH_ID;
 extern void _InitIsolatorContext(graphP theGraph);
 extern void _ClearVisitedFlags(graphP);
 extern int  _ClearVisitedFlagsInBicomp(graphP theGraph, int BicompRoot);
-extern int  _ClearVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
-extern void _ClearVisitedFlagsInUnembeddedEdges(graphP theGraph);
+//extern int  _ClearVisitedFlagsInOtherBicomps(graphP theGraph, int BicompRoot);
+//extern void _ClearVisitedFlagsInUnembeddedEdges(graphP theGraph);
 extern int  _ClearVertexTypeInBicomp(graphP theGraph, int BicompRoot);
-extern int  _DeleteUnmarkedEdgesInBicomp(graphP theGraph, int BicompRoot);
+//extern int  _DeleteUnmarkedEdgesInBicomp(graphP theGraph, int BicompRoot);
 extern int  _ComputeArcType(graphP theGraph, int a, int b, int edgeType);
 extern int  _SetEdgeType(graphP theGraph, int u, int v);
 
 extern int  _GetNeighborOnExtFace(graphP theGraph, int curVertex, int *pPrevLink);
 extern int  _JoinBicomps(graphP theGraph);
-extern void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY);
+//extern void _FindActiveVertices(graphP theGraph, int R, int *pX, int *pY);
 extern int  _OrientVerticesInBicomp(graphP theGraph, int BicompRoot, int PreserveSigns);
 extern int  _OrientVerticesInEmbedding(graphP theGraph);
-extern void _InvertVertex(graphP theGraph, int V);
+//extern void _InvertVertex(graphP theGraph, int V);
 extern int  _ClearVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 extern int  _SetVisitedFlagsOnPath(graphP theGraph, int u, int v, int w, int x);
 extern int  _OrientExternalFacePath(graphP theGraph, int u, int v, int w, int x);
@@ -82,7 +44,7 @@ extern int  _AddAndMarkEdge(graphP theGraph, int ancestor, int descendant);
 extern int  _DeleteUnmarkedVerticesAndEdges(graphP theGraph);
 
 extern int  _IsolateOuterplanarityObstructionA(graphP theGraph);
-extern int  _IsolateOuterplanarityObstructionB(graphP theGraph);
+//extern int  _IsolateOuterplanarityObstructionB(graphP theGraph);
 extern int  _IsolateOuterplanarityObstructionE(graphP theGraph);
 
 extern void _K4Search_InitEdgeRec(K4SearchContext *context, int e);
@@ -120,7 +82,7 @@ int  _K4_DeleteUnmarkedEdgesInBicomp(graphP theGraph, K4SearchContext *context, 
 int  _K4_RestoreReducedPath(graphP theGraph, K4SearchContext *context, int e);
 int  _K4_RestoreAndOrientReducedPaths(graphP theGraph, K4SearchContext *context);
 
-int _MarkEdge(graphP theGraph, int x, int y);
+//int _MarkEdge(graphP theGraph, int x, int y);
 
 /****************************************************************************
  _SearchForK4InBicomp()

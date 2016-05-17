@@ -1,45 +1,7 @@
 /*
-Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
-All rights reserved. Includes a reference implementation of the following:
-
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
-
-* John M. Boyer. "A New Method for Efficiently Generating Planar Graph
-  Visibility Representations". In P. Eades and P. Healy, editors,
-  Proceedings of the 13th International Conference on Graph Drawing 2005,
-  Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice, this
-  list of conditions and the following disclaimer in the documentation and/or
-  other materials provided with the distribution.
-
-* Neither the name of the Planarity-Related Graph Algorithms Project nor the names
-  of its contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Copyright (c) 1997-2015, John M. Boyer
+All rights reserved.
+See the LICENSE.TXT file for licensing information.
 */
 
 #include "planarity.h"
@@ -165,7 +127,69 @@ void SaveAsciiGraph(graphP theGraph, char *filename)
 /****************************************************************************
  ****************************************************************************/
 
-int  FilesEqual(char *file1Name, char *file2Name)
+int  TextFilesEqual(char *file1Name, char *file2Name)
+{
+	FILE *infile1 = NULL, *infile2 = NULL;
+	int Result = TRUE;
+
+	infile1 = fopen(file1Name, "r");
+	infile2 = fopen(file2Name, "r");
+
+	if (infile1 == NULL || infile2 == NULL)
+		Result = FALSE;
+	else
+	{
+		int c1=0, c2=0;
+
+		// Read the first file to the end
+		while ((c1 = fgetc(infile1)) != EOF)
+		{
+			// Want to suppress distinction between lines ending with CRLF versus LF
+			if (c1 == '\r')
+				continue;
+
+			// Get a char from the second file, except suppress CR again
+			while ((c2 = fgetc(infile2)) == '\r')
+				;
+
+			// If we got a char from the first file, but not from the second
+			// then the second file is shorter, so files are not equal
+			if (c2 == EOF)
+			{
+				Result = FALSE;
+				break;
+			}
+
+			// If we got a char from second file, but not equal to char from
+			// first file, then files are not equal
+			if (c1 != c2)
+			{
+				Result = FALSE;
+				break;
+			}
+		}
+
+		// If we got to the end of the first file without breaking the loop...
+		if (c1 == EOF)
+		{
+			// Then, once again, suppress CRs first, and then...
+			while ((c2 = fgetc(infile2)) == '\r')
+				;
+			// Test whether or not the second file also ends, same as the first.
+			if (fgetc(infile2) != EOF)
+				Result = FALSE;
+		}
+	}
+
+	if (infile1 != NULL) fclose(infile1);
+	if (infile2 != NULL) fclose(infile2);
+	return Result;
+}
+
+/****************************************************************************
+ ****************************************************************************/
+
+int  BinaryFilesEqual(char *file1Name, char *file2Name)
 {
 	FILE *infile1 = NULL, *infile2 = NULL;
 	int Result = TRUE;
@@ -248,7 +272,6 @@ char *GetAlgorithmName(char command)
 		case '2' : algorithmName = K23SEARCH_NAME; break;
 		case '3' : algorithmName = K33SEARCH_NAME; break;
 		case '4' : algorithmName = K4SEARCH_NAME; break;
-		case 'c' : algorithmName = COLORVERTICES_NAME; break;
 	}
 
 	return algorithmName;
@@ -265,7 +288,6 @@ void AttachAlgorithm(graphP theGraph, char command)
 		case '2' : gp_AttachK23Search(theGraph); break;
 		case '3' : gp_AttachK33Search(theGraph); break;
 		case '4' : gp_AttachK4Search(theGraph); break;
-		case 'c' : gp_AttachColorVertices(theGraph); break;
 	}
 }
 

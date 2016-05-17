@@ -1,45 +1,7 @@
 /*
-Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
-All rights reserved. Includes a reference implementation of the following:
-
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
-
-* John M. Boyer. "A New Method for Efficiently Generating Planar Graph
-  Visibility Representations". In P. Eades and P. Healy, editors,
-  Proceedings of the 13th International Conference on Graph Drawing 2005,
-  Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice, this
-  list of conditions and the following disclaimer in the documentation and/or
-  other materials provided with the distribution.
-
-* Neither the name of the Planarity-Related Graph Algorithms Project nor the names
-  of its contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Copyright (c) 1997-2015, John M. Boyer
+All rights reserved.
+See the LICENSE.TXT file for licensing information.
 */
 
 #include "planarity.h"
@@ -67,7 +29,6 @@ int Result;
 		case '2' : gp_AttachK23Search(theGraph); break;
 		case '3' : gp_AttachK33Search(theGraph); break;
 		case '4' : gp_AttachK4Search(theGraph); break;
-		case 'c' : gp_AttachColorVertices(theGraph); break;
 	}
 
     // Read the graph into memory
@@ -111,13 +72,7 @@ int Result;
         else
         {
 	        platform_GetTime(start);
-        	if (command == 'c')
-        	{
-    			if ((Result = gp_ColorVertices(theGraph)) == OK)
-    				 Result = gp_ColorVerticesIntegrityCheck(theGraph, origGraph);
-        	}
-        	else
-    			Result = NOTOK;
+   			Result = NOTOK;
    	        platform_GetTime(end);
         }
 
@@ -149,11 +104,15 @@ int Result;
         // For some algorithms, the primary output file is not always written
         if ((strchr("pdo", command) && Result == NONEMBEDDABLE) ||
         	(strchr("234", command) && Result == OK))
-        	;
+        {
+        	// Do not write the file
+        }
 
         // Write the primary output file, if appropriate to do so
         else
+        {
 			gp_Write(theGraph, outfileName, WRITE_ADJLIST);
+        }
 
         // NOW WE WANT TO WRITE THE SECONDARY OUTPUT FILE
 
@@ -207,8 +166,7 @@ void WriteAlgorithmResults(graphP theGraph, int Result, char command, platform_t
 		case '2' : sprintf(Line, "has %s subgraph homeomorphic to K_{2,3}.\n", Result==OK ? "no" : "a"); break;
 		case '3' : sprintf(Line, "has %s subgraph homeomorphic to K_{3,3}.\n", Result==OK ? "no" : "a"); break;
 		case '4' : sprintf(Line, "has %s subgraph homeomorphic to K_4.\n", Result==OK ? "no" : "a"); break;
-		case 'c' : sprintf(Line, "has been %d-colored.\n", gp_GetNumColorsUsed(theGraph)); break;
-		default  : sprintf(Line, "nas not been processed due to unrecognized command.\n"); break;
+		default  : sprintf(Line, "has not been processed due to unrecognized command.\n"); break;
 	}
 	Message(Line);
 

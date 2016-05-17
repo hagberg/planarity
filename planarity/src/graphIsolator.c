@@ -1,45 +1,7 @@
 /*
-Planarity-Related Graph Algorithms Project
-Copyright (c) 1997-2010, John M. Boyer
-All rights reserved. Includes a reference implementation of the following:
-
-* John M. Boyer. "Simplified O(n) Algorithms for Planar Graph Embedding,
-  Kuratowski Subgraph Isolation, and Related Problems". Ph.D. Dissertation,
-  University of Victoria, 2001.
-
-* John M. Boyer and Wendy J. Myrvold. "On the Cutting Edge: Simplified O(n)
-  Planarity by Edge Addition". Journal of Graph Algorithms and Applications,
-  Vol. 8, No. 3, pp. 241-273, 2004.
-
-* John M. Boyer. "A New Method for Efficiently Generating Planar Graph
-  Visibility Representations". In P. Eades and P. Healy, editors,
-  Proceedings of the 13th International Conference on Graph Drawing 2005,
-  Lecture Notes Comput. Sci., Volume 3843, pp. 508-511, Springer-Verlag, 2006.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
-* Redistributions of source code must retain the above copyright notice, this
-  list of conditions and the following disclaimer.
-
-* Redistributions in binary form must reproduce the above copyright notice, this
-  list of conditions and the following disclaimer in the documentation and/or
-  other materials provided with the distribution.
-
-* Neither the name of the Planarity-Related Graph Algorithms Project nor the names
-  of its contributors may be used to endorse or promote products derived from this
-  software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
-AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
-IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+Copyright (c) 1997-2015, John M. Boyer
+All rights reserved.
+See the LICENSE.TXT file for licensing information.
 */
 
 #define GRAPHISOLATOR_C
@@ -240,6 +202,7 @@ isolatorContextP IC = &theGraph->IC;
              return NOTOK;
      }
 
+     // Note: The x-y path is already marked, due to identifying the type of non-planarity minor
      if (_MarkDFSPathsToDescendants(theGraph) != OK ||
          theGraph->functions.fpMarkDFSPath(theGraph, MIN(IC->ux, IC->uy), IC->r) != OK ||
          _JoinBicomps(theGraph) != OK ||
@@ -257,6 +220,7 @@ int  _IsolateMinorD(graphP theGraph)
 {
 isolatorContextP IC = &theGraph->IC;
 
+	 // Note: The x-y and v-z paths are already marked, due to identifying the type of non-planarity minor
      if (_MarkPathAlongBicompExtFace(theGraph, IC->x, IC->y) != OK ||
          theGraph->functions.fpMarkDFSPath(theGraph, MIN(IC->ux, IC->uy), IC->r) != OK ||
          _MarkDFSPathsToDescendants(theGraph) != OK ||
@@ -297,6 +261,7 @@ isolatorContextP IC = &theGraph->IC;
 
 /* Minor E: Isolate a K5 homeomorph */
 
+     // Note: The x-y path is already marked, due to identifying the type of non-planarity minor
      if (_MarkPathAlongBicompExtFace(theGraph, IC->r, IC->r) != OK ||
          theGraph->functions.fpMarkDFSPath(theGraph, MIN3(IC->ux, IC->uy, IC->uz), IC->r) != OK ||
          _MarkDFSPathsToDescendants(theGraph) != OK ||
@@ -330,6 +295,9 @@ isolatorContextP IC = &theGraph->IC;
      }
      else return NOTOK;
 
+     // Note: The x-y path is already marked, due to identifying E as the type of non-planarity minor,
+     // but the x-y path is also included in minor C, so we let it stay marked since the minor C
+     // isolator also assumes the x-y path has been marked by non-planarity minor type identification
      IC->z = IC->uz = IC->dz = NIL;
      theGraph->IC.minorType ^= MINORTYPE_E;
      theGraph->IC.minorType |= (MINORTYPE_C|MINORTYPE_E1);
@@ -347,6 +315,9 @@ int  _IsolateMinorE2(graphP theGraph)
 {
 isolatorContextP IC = &theGraph->IC;
 
+     // Note: The x-y path was already marked, due to identifying E as the type of non-planarity minor,
+     // but we're reducing to Minor A, which does not include the x-y path, so the visited flags are
+     // cleared as a convenient, if somewhat wasteful, way to clear the marking on the x-y path
      _ClearVisitedFlags(theGraph);
 
      IC->v = IC->uz;
@@ -379,6 +350,7 @@ isolatorContextP IC = &theGraph->IC;
              return NOTOK;
      }
 
+     // Note: The x-y path is already marked, due to identifying E as the type of non-planarity minor
      if (theGraph->functions.fpMarkDFSPath(theGraph, MIN3(IC->ux, IC->uy, IC->uz), IC->r) != OK ||
          _MarkDFSPathsToDescendants(theGraph) != OK ||
          _JoinBicomps(theGraph) != OK ||
@@ -410,6 +382,7 @@ isolatorContextP IC = &theGraph->IC;
              return NOTOK;
      }
 
+     // Note: The x-y path is already marked, due to identifying E as the type of non-planarity minor
      if (theGraph->functions.fpMarkDFSPath(theGraph, MIN3(IC->ux, IC->uy, IC->uz),
                                     MAX3(IC->ux, IC->uy, IC->uz)) != OK ||
          _MarkDFSPathsToDescendants(theGraph) != OK ||
