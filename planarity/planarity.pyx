@@ -4,6 +4,7 @@
 Wrapper for Boyer's (C) planarity algorithms.
 """
 cimport cplanarity
+import warnings
 
 cdef class PGraph:
     cdef cplanarity.graphP theGraph
@@ -42,13 +43,18 @@ cdef class PGraph:
         if status != cplanarity.OK:
             raise RuntimeError("planarity: failed to initialize graph")
         # add the edges and check return
+        seen = set()
         for u,v in edges:
-            status = cplanarity.gp_AddEdge(self.theGraph, 
-                                           self.nodemap[u], 0, 
-                                           self.nodemap[v], 0)
-            if status == cplanarity.NOTOK:
-                cplanarity.gp_Free(&self.theGraph)
-                raise RuntimeError("planarity: failed adding edge.")
+            if (u,v) not in seen and (v,u) not in seen:
+                status = cplanarity.gp_AddEdge(self.theGraph, 
+                                               self.nodemap[u], 0, 
+                                               self.nodemap[v], 0)
+                if status == cplanarity.NOTOK:
+                    cplanarity.gp_Free(&self.theGraph)
+                    raise RuntimeError("planarity: failed adding edge.")
+                seen.add((u,v))
+            else:
+                warnings.warn('ignoring parallel edge %s-%s'%(str(u),str(v)))
         self.embedding=cplanarity.NULL
 
 
