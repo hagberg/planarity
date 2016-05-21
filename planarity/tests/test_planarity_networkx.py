@@ -63,12 +63,13 @@ class TestPlanarityNetworkX:
         G=nx.complete_graph(5)
         G.remove_edge(1,2)
         K=planarity.kuratowski_subgraph(G)
-        assert_equal(K.nodes(),[])
-        assert_equal(K.edges(),[])
+        assert_equal(list(K.nodes()),[])
+        assert_equal(list(K.edges()),[])
 
     def test_networkx_graph(self):
         G=nx.Graph()
-        G.add_path([100,200,300])
+        G.add_edge(100,200)
+        G.add_edge(200,300)
         G.add_node(1000)
         P=planarity.PGraph(G)
         H=planarity.networkx_graph(P)

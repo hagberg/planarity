@@ -15,8 +15,8 @@ cdef class PGraph:
         # guess input type
         if hasattr(graph,'nodes'):
             # NetworkX graph
-            nodes=graph.nodes()
-            edges=graph.edges()
+            nodes=list(graph.nodes())
+            edges=list(graph.edges())
         elif hasattr(graph,'keys'):
             # adjacency dict of dicts|sets|lists
             nodes=graph.keys()
