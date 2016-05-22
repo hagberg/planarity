@@ -19,10 +19,10 @@ int gp_AttachDrawPlanar(graphP theGraph);
 int gp_DetachDrawPlanar(graphP theGraph);
 
 int  gp_DrawPlanar_RenderToFile(graphP theEmbedding, char *theFileName);
+char * _RenderToString(graphP theEmbedding);
 
 #ifdef __cplusplus
 }
 #endif
 
 #endif
-
