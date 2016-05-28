@@ -112,7 +112,7 @@ class TestPlanarity:
     def test_draw_text(self):
         e=([1,2],)
         P=planarity.PGraph(e)
-        s=P.ascii().decode()
+        s=P.ascii()#.decode()
         assert_equal(s,'1\n|\n2\n \n')
 
     def test_write_adjlist(self):

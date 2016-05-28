@@ -153,7 +153,7 @@ cdef class PGraph:
 
     def ascii(self):
         self.embed_drawplanar()
-        return cplanarity._RenderToString(self.theGraph)
+        return cplanarity._RenderToString(self.theGraph).decode('ascii')
 
 
     def write(self,path):
