@@ -44,7 +44,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = 'planarity'
-copyright = '2013, Aric Hagberg'
+copyright = '2016, Aric Hagberg'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

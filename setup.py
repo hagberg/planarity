@@ -8,7 +8,7 @@ from distutils.extension import Extension
 from Cython.Distutils import build_ext
 from glob import glob
 
-long_description  = """Graph planarity tools.  
+long_description  = """Graph planarity tools.
 A wrapper to Boyer's (C) planarity algorithms: http://code.google.com/p/planarity/
 
 Provides planarity testing, forbidden subgraph finding, and planar embeddings.
@@ -23,13 +23,9 @@ classifiers = [
         'License :: OSI Approved :: BSD License',
         'Operating System :: OS Independent',
         'Programming Language :: Python :: 2',
-        'Programming Language :: Python :: 2.6',
         'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.1',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.2',
-        'Programming Language :: Python :: 3.3',
+        'Programming Language :: Python :: 3.4',
         'Topic :: Software Development :: Libraries :: Python Modules',
         'Topic :: Scientific/Engineering :: Information Analysis',
         'Topic :: Scientific/Engineering :: Mathematics',
@@ -54,7 +50,7 @@ setup(
                              sourcefiles,
                              include_dirs=['planarity/src/'],
                              )],
-    version          = '0.3.1',
+    version          = '0.4',
     url = 'https://github.com/hagberg/planarity/',
     download_url='https://pypi.python.org/pypi/planarity',
     package_data = {'planarity':['tests/*.py']},
