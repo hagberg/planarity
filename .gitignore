@@ -1,0 +1,17 @@
+*.pyc
+__pycache__
+*~
+.DS_Store
+build/*
+.coverage
+*.class
+
+dist/
+planarity.egg-info/
+*.so
+
+# Vim's swap files
+*.sw[op]
+
+#Spyder project file
+.spyderproject
