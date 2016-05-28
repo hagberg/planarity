@@ -30,6 +30,8 @@ True
 In [9]: # make an ascii text drawing
 
 In [10]: print(planarity.ascii(edgelist))
+```
+
 ----1----
 | | |   |
 | | -3--|
@@ -40,7 +42,6 @@ In [10]: print(planarity.ascii(edgelist))
  |     ||
  ---5----
 
-```
 See <https://github.com/hagberg/planarity/tree/master/examples> for more examples.
 
 
