@@ -50,11 +50,11 @@ setup(
                              sourcefiles,
                              include_dirs=['planarity/src/'],
                              )],
-    version          = '0.4',
+    version          = '0.4.1',
     url = 'https://github.com/hagberg/planarity/',
     download_url='https://pypi.python.org/pypi/planarity',
     package_data = {'planarity':['tests/*.py']},
-        install_requires=['setuptools'],
+        install_requires=['setuptools','cython'],
         test_suite = 'nose.collector', 
         tests_require = ['nose >= 0.10.1'] ,
         zip_safe = False

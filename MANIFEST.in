@@ -4,7 +4,11 @@ include INSTALL.txt
 include LICENSE.txt
 include README.md
 
-recursive-include examples *.py *.gz *.h
+include planarity/cplanarity.pxd
+include planarity/src/*.c
+include planarity/src/*.h
+
+recursive-include examples *.py *.gz
 recursive-include doc *.py *.rst Makefile *.html *.txt
 
 global-exclude *~
