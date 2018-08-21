@@ -5,8 +5,14 @@ import setuptools
 from setuptools import setup
 
 from distutils.extension import Extension
-from Cython.Distutils import build_ext
 from glob import glob
+
+try:
+    from Cython.Build import cythonize
+except ImportError:
+    USE_CYTHON = False
+else:
+    USE_CYTHON = True
 
 long_description  = """Graph planarity tools.
 A wrapper to Boyer's (C) planarity algorithms: http://code.google.com/p/planarity/
@@ -31,8 +37,19 @@ classifiers = [
         'Topic :: Scientific/Engineering :: Mathematics',
         'Topic :: Scientific/Engineering :: Physics']
 
-sourcefiles = ['planarity/planarity.pyx']
+ext = '.pyx' if USE_CYTHON else '.c'
+
+sourcefiles = ['planarity/planarity'+ext]
 sourcefiles.extend(glob("planarity/src/*.c"))
+
+extensions = [Extension("planarity.planarity",
+                        sourcefiles,
+                        include_dirs=['planarity/src/'],
+                        )]
+
+if USE_CYTHON:
+    from Cython.Build import cythonize
+    extensions = cythonize(extensions)
 
 setup(
     name= 'planarity',
@@ -45,16 +62,12 @@ setup(
     classifiers = classifiers,
     long_description = long_description,
     license = 'BSD',
-    cmdclass = {'build_ext': build_ext},
-    ext_modules = [Extension("planarity.planarity",
-                             sourcefiles,
-                             include_dirs=['planarity/src/'],
-                             )],
+    ext_modules = extensions,
     version          = '0.4.1',
     url = 'https://github.com/hagberg/planarity/',
     download_url='https://pypi.python.org/pypi/planarity',
     package_data = {'planarity':['tests/*.py']},
-        install_requires=['setuptools','cython'],
+        install_requires=['setuptools'],
         test_suite = 'nose.collector', 
         tests_require = ['nose >= 0.10.1'] ,
         zip_safe = False
