@@ -5,6 +5,7 @@ include LICENSE.txt
 include README.md
 
 include planarity/cplanarity.pxd
+include planarity/planarity.c
 include planarity/src/*.c
 include planarity/src/*.h
 
