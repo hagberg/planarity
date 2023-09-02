@@ -3,7 +3,7 @@
 """
 Wrapper for Boyer's (C) planarity algorithms.
 """
-cimport cplanarity
+from planarity cimport cplanarity
 import warnings
 
 cdef class PGraph:
