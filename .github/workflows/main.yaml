@@ -5,12 +5,10 @@ on: [push]
 jobs:
   build:
 
-    #runs-on: ["ubuntu-latest","ubuntu-20.04"]
-    runs-on: ["ubuntu-latest"]
+    runs-on: ["ubuntu-latest","ubuntu-20.04"]
     strategy:
       matrix:
-       #python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
-       python-version: ["3.11"]
+       python-version: ["3.7",  "3.11"]
 
     steps:
       - uses: actions/checkout@v3
@@ -40,9 +38,4 @@ jobs:
 #          ruff --format=github --target-version=py37 .
       - name: Test with pytest
         run: |
-          python -m pip list
-          #ls -l /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages
-          #echo "--------------------"
-          #ls -l /opt/hostedtoolcache/Python/3.11.4/x64/lib/python3.11/site-packages/planarity
-          #python debug.py
           pytest -vv
