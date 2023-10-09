@@ -1,0 +1,6 @@
+setuptools
+wheel
+cython
+networkx
+matplotlib
+pytest
