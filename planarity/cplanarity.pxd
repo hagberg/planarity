@@ -34,7 +34,7 @@ cdef extern from "src/graph.h":
 
 
 cdef extern from "src/graphDrawPlanar.h":
-    cdef char * _RenderToString(graphP theEmbedding)
+    cdef int gp_DrawPlanar_RenderToString(graphP theEmbedding, char **pRenditionString);
     cdef int gp_AttachDrawPlanar(graphP theGraph)
 
 

@@ -4,6 +4,7 @@
 Wrapper for Boyer's (C) planarity algorithms.
 """
 from planarity cimport cplanarity
+from libc.stdlib cimport free
 import warnings
 
 cdef class PGraph:
@@ -152,8 +153,12 @@ cdef class PGraph:
 
 
     def ascii(self):
+        cdef char* s = NULL
         self.embed_drawplanar()
-        return cplanarity._RenderToString(self.theGraph).decode('ascii')
+        status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
+        py_bytes = s[:]
+        free(s)
+        return py_bytes.decode('ascii')
 
 
     def write(self,path):
