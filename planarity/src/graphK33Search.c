@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -730,7 +730,7 @@ int  child, e;
 int  _SearchForMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int *pMergeBlocker)
 {
 stackP tempStack;
-int  R, Rout, Z, ZPrevLink;
+int  Z;
 
 /* Set return result to 'not found' then return if there is no stack to inspect */
 
@@ -749,8 +749,8 @@ int  R, Rout, Z, ZPrevLink;
 
      while (!sp_IsEmpty(tempStack))
      {
-         sp_Pop2(tempStack, R, Rout);
-         sp_Pop2(tempStack, Z, ZPrevLink);
+         sp_Pop2_Discard(tempStack); /* Move (R, Rout) out of the way */
+         sp_Pop2_Discard1(tempStack, Z); /* Get Z, discard ZPrevLink */
 
          if (gp_IsVertex(context->VI[Z].mergeBlocker) &&
              context->VI[Z].mergeBlocker < v)
@@ -775,7 +775,7 @@ int  R, Rout, Z, ZPrevLink;
 
 int  _FindK33WithMergeBlocker(graphP theGraph, K33SearchContext *context, int v, int mergeBlocker)
 {
-int  R, RPrevLink, u_max, u, e, W;
+int  R, RPrevLink, u_max, u, e;
 isolatorContextP IC = &theGraph->IC;
 
 /* First, we orient the vertices so we can successfully restore all of the
@@ -823,7 +823,6 @@ isolatorContextP IC = &theGraph->IC;
      e = gp_GetVertexFwdArcList(theGraph, IC->v);
      while (gp_IsArc(e))
      {
-        W = gp_GetNeighbor(theGraph, e);
         theGraph->functions.fpWalkUp(theGraph, IC->v, e);
 
         e = gp_GetNextArc(theGraph, e);
@@ -1257,7 +1256,7 @@ int  p, c, d, excludedChild, e;
 int  _ReduceBicomp(graphP theGraph, K33SearchContext *context, int R)
 {
 isolatorContextP IC = &theGraph->IC;
-int  min, mid, max, A, A_edge, B, B_edge;
+int  min, max, A, A_edge, B, B_edge;
 int  rxType, xwType, wyType, yrType, xyType;
 
 /* The vertices in the bicomp need to be oriented so that functions
@@ -1278,7 +1277,7 @@ int  rxType, xwType, wyType, yrType, xyType;
 
      min = MIN3(IC->x, IC->y, IC->w);
      max = MAX3(IC->x, IC->y, IC->w);
-     mid = MAX3(MIN(IC->x, IC->y), MIN(IC->x, IC->w), MIN(IC->y, IC->w));
+     // int mid = MAX3(MIN(IC->x, IC->y), MIN(IC->x, IC->w), MIN(IC->y, IC->w));
 
 /* If the order of descendendancy from V goes first to X, then it can
     proceed either to W then Y or to Y then W */

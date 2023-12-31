@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -300,8 +300,9 @@ int  _DrawPlanar_InitGraph(graphP theGraph, int N)
     DrawPlanarContext *context = NULL;
     gp_FindExtension(theGraph, DRAWPLANAR_ID, (void *)&context);
 
-    if (context == NULL)
-        return NOTOK;
+    if (context == NULL) {
+    	return NOTOK;
+    }
 
 	theGraph->N = N;
 	theGraph->NV = N;

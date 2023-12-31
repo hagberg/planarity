@@ -2,10 +2,26 @@
 #define APPCONST_H
 
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
+
+#ifdef WIN32
+#define WINDOWS
+#endif
+
+/* Defines fopen strings for reading and writing text files on PC and UNIX */
+
+#ifdef WINDOWS
+#define READTEXT        "rt"
+#define WRITETEXT       "wt"
+#define FILE_DELIMITER  '\\'
+#else
+#define READTEXT        "r"
+#define WRITETEXT       "w"
+#define FILE_DELIMITER  '/'
+#endif
 
 // When PROFILE is defined, prints out run-time stats on a number of subordinate
 // routines in the embedder
@@ -62,16 +78,6 @@ extern int debugNOTOK();
 // This definition is used in combination with 0-based array indexing
 //#define NIL		-1
 //#define NIL_CHAR	0xFF
-
-/* Defines fopen strings for reading and writing text files on PC and UNIX */
-
-#ifdef WINDOWS
-#define READTEXT        "rt"
-#define WRITETEXT       "wt"
-#else
-#define READTEXT        "r"
-#define WRITETEXT       "w"
-#endif
 
 /********************************************************************
  A few simple integer selection macros

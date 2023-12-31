@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -41,7 +41,7 @@ int  _FindFuturePertinenceBelowXYPath(graphP theGraph);
 
 int  _ChooseTypeOfNonplanarityMinor(graphP theGraph, int v, int R)
 {
-int  X, Y, W, Px, Py, Z;
+int  W, Px, Py, Z;
 
 /* Create the initial non-planarity minor state in the isolator context */
 
@@ -49,8 +49,6 @@ int  X, Y, W, Px, Py, Z;
          return NOTOK;
 
      R = theGraph->IC.r;
-     X = theGraph->IC.x;
-     Y = theGraph->IC.y;
      W = theGraph->IC.w;
 
 /* If the root copy is not a root copy of the current vertex v,
@@ -157,16 +155,18 @@ int  _InitializeNonplanarityContext(graphP theGraph, int v, int R)
      // of the stack, so R must be changed to that value.
 	 if (sp_NonEmpty(theGraph->theStack))
 	 {
-		 int dummy;
-		 sp_Pop2(theGraph->theStack, R, dummy);
+		 // The top of stack has the pair R and 0/1 direction Walkdown traversal proceeds from R
+		 // Need only R, so pop and discard the direction, then pop R
+		 sp_Pop2_Discard1(theGraph->theStack, R);
 	 }
 
      theGraph->IC.r = R;
 
      // A number of subroutines require the main bicomp of the minor to be
      // consistently oriented and its visited flags clear.
-     if (_OrientVerticesInBicomp(theGraph, R, 1) != OK)
+     if (_OrientVerticesInBicomp(theGraph, R, 1) != OK) {
     	 return NOTOK;
+     }
 
 	 if (_ClearVisitedFlagsInBicomp(theGraph, R) != OK)
 		 return NOTOK;
@@ -311,10 +311,9 @@ int  W=theGraph->IC.x, WPrevLink=1;
 
 int  _SetVertexTypesForMarkingXYPath(graphP theGraph)
 {
-	int  v, R, X, Y, W, Z, ZPrevLink, ZType;
+	int  R, X, Y, W, Z, ZPrevLink, ZType;
 
 	// Unpack the context for efficiency of loops
-	v = theGraph->IC.v;
 	R = theGraph->IC.r;
 	X = theGraph->IC.x;
 	Y = theGraph->IC.y;
@@ -466,14 +465,12 @@ int  V, e;
 int  _MarkHighestXYPath(graphP theGraph)
 {
 int e, Z;
-int R, X, Y, W;
+int R, W;
 int stackBottom1, stackBottom2;
 
 /* Initialization */
 
      R = theGraph->IC.r;
-     X = theGraph->IC.x;
-     Y = theGraph->IC.y;
      W = theGraph->IC.w;
      theGraph->IC.px = theGraph->IC.py = NIL;
 

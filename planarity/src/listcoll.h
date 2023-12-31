@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -73,14 +73,21 @@ int  LCDelete(listCollectionP listColl, int theList, int theNode);
          : theNode==theList ? NIL : listColl->List[theNode].prev)
 
 /* int  LCPrepend(listCollectionP listColl, int theList, int theNode);
-    After an append, theNode is last, which in a circular list is the direct predecessor
-	of the list head node, so we just back up one. For singletons, this has no effect.*/
+	If theList is empty, then theNode becomes its only member and is returned.
+	Otherwise, theNode is placed before theList head, and theNode is returned as the new head. */
 
-#define LCPrepend(listColl, theList, theNode) listColl->List[LCAppend(listColl, theList, theNode)].prev
+#define LCPrepend(listColl, theList, theNode) \
+        (theList==NIL \
+         ? (listColl->List[theNode].prev = listColl->List[theNode].next = theNode) \
+         : (listColl->List[theNode].next = theList, \
+            listColl->List[theNode].prev = listColl->List[theList].prev, \
+            listColl->List[listColl->List[theNode].prev].next = theNode, \
+            listColl->List[theList].prev = theNode, \
+			listColl->List[theList].prev))
 
 /* int  LCAppend(listCollectionP listColl, int theList, int theNode);
 	If theList is empty, then theNode becomes its only member and is returned.
-	Otherwise, theNode is placed before theList head, which is returned. */
+	Otherwise, theNode is placed before theList head, and then theList head is returned. */
 
 #define LCAppend(listColl, theList, theNode) \
         (theList==NIL \
@@ -89,7 +96,7 @@ int  LCDelete(listCollectionP listColl, int theList, int theNode);
             listColl->List[theNode].prev = listColl->List[theList].prev, \
             listColl->List[listColl->List[theNode].prev].next = theNode, \
             listColl->List[theList].prev = theNode, \
-	    theList))
+			theList))
 
 /* int  LCDelete(listCollectionP listColl, int theList, int theNode);
 	If theList contains only one node, then NIL it out and return NIL meaning empty list

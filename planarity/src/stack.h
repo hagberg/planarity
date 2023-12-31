@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -48,10 +48,18 @@ int  sp__Push(stackP, int);
 int  sp__Push2(stackP, int, int);
 
 #define sp_Pop(theStack, a) { if (sp__Pop(theStack, &(a)) != OK) return NOTOK; }
+#define sp_Pop_Discard(theStack) { if (sp__Pop_Discard(theStack) != OK) return NOTOK; }
+
 #define sp_Pop2(theStack, a, b) { if (sp__Pop2(theStack, &(a), &(b)) != OK) return NOTOK; }
+#define sp_Pop2_Discard1(theStack, a) { if (sp__Pop2_Discard1(theStack, &(a)) != OK) return NOTOK; }
+#define sp_Pop2_Discard(theStack) { if (sp__Pop2_Discard(theStack) != OK) return NOTOK; }
 
 int  sp__Pop(stackP, int *);
+int  sp__Pop_Discard(stackP theStack);
+
 int  sp__Pop2(stackP, int *, int *);
+int  sp__Pop2_Discard1(stackP theStack, int *pA);
+int  sp__Pop2_Discard(stackP theStack);
 
 int  sp_Top(stackP);
 int  sp_Get(stackP, int);
@@ -70,7 +78,11 @@ int  sp_Set(stackP, int, int);
 #define sp_Push2(theStack, a, b) {sp_Push(theStack, a); sp_Push(theStack, b);}
 
 #define sp_Pop(theStack, a) a=theStack->S[--theStack->size]
+#define sp_Pop_Discard(theStack) --theStack->size
+
 #define sp_Pop2(theStack, a, b) {sp_Pop(theStack, b);sp_Pop(theStack, a);}
+#define sp_Pop2_Discard1(theStack, a) {sp_Pop_Discard(theStack);sp_Pop(theStack, a);}
+#define sp_Pop2_Discard(theStack) {sp_Pop_Discard(theStack);sp_Pop_Discard(theStack);}
 
 #define sp_Top(theStack) (theStack->size ? theStack->S[theStack->size-1] : NIL)
 #define sp_Get(theStack, pos) (theStack->S[pos])

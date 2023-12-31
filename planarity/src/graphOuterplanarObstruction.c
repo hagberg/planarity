@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -47,15 +47,13 @@ int  _IsolateOuterplanarityObstructionE(graphP theGraph);
 
 int  _ChooseTypeOfNonOuterplanarityMinor(graphP theGraph, int v, int R)
 {
-int  X, Y, W;
+int  W;
 
 	 // Create the initial non-outerplanarity obstruction isolator state.
      if (_InitializeNonplanarityContext(theGraph, v, R) != OK)
          return NOTOK;
 
      R = theGraph->IC.r;
-     X = theGraph->IC.x;
-     Y = theGraph->IC.y;
      W = theGraph->IC.w;
 
      // If the root copy is not a root copy of the current vertex v,

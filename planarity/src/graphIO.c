@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -11,10 +11,10 @@ See the LICENSE.TXT file for licensing information.
 
 /* Private functions (exported to system) */
 
-int  _ReadAdjMatrix(graphP theGraph, FILE *Infile);
-int  _ReadAdjList(graphP theGraph, FILE *Infile);
-int  _WriteAdjList(graphP theGraph, FILE *Outfile);
-int  _WriteAdjMatrix(graphP theGraph, FILE *Outfile);
+int  _ReadAdjMatrix(graphP theGraph, FILE *Infile, strBufP inBuf);
+int  _ReadAdjList(graphP theGraph, FILE *Infile, strBufP inBuf);
+int  _WriteAdjList(graphP theGraph, FILE *Outfile, strBufP outBuf);
+int  _WriteAdjMatrix(graphP theGraph, FILE *Outfile, strBufP outBuf);
 int  _WriteDebugInfo(graphP theGraph, FILE *Outfile);
 
 /********************************************************************
@@ -26,21 +26,46 @@ int  _WriteDebugInfo(graphP theGraph, FILE *Outfile);
  Returns: OK, NOTOK on internal error, NONEMBEDDABLE if too many edges
  ********************************************************************/
 
-int _ReadAdjMatrix(graphP theGraph, FILE *Infile)
+int _ReadAdjMatrix(graphP theGraph, FILE *Infile, strBufP inBuf)
 {
 	int N, v, w, Flag;
 
-    if (Infile == NULL) return NOTOK;
-    fscanf(Infile, " %d ", &N);
+    if (Infile == NULL  && inBuf == NULL)
+    	return NOTOK;
+
+    // Read the number of vertices from the first line of the file
+    if (Infile != NULL)
+    	fscanf(Infile, " %d ", &N);
+    else
+    {
+    	sb_ReadSkipWhitespace(inBuf);
+    	sscanf(sb_GetReadString(inBuf), " %d ", &N);
+    	sb_ReadSkipInteger(inBuf);
+    	sb_ReadSkipWhitespace(inBuf);
+    }
+
+    // Initialize the graph based on the number of vertices
     if (gp_InitGraph(theGraph, N) != OK)
         return NOTOK;
 
+    // Read an upper-triangular matrix row for each vertex
+    // Note that for the last vertex, zero flags are read, per the upper triangular format
     for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
     {
          gp_SetVertexIndex(theGraph, v, v);
          for (w = v+1; gp_VertexInRange(theGraph, w); w++)
          {
-              fscanf(Infile, " %1d", &Flag);
+        	  // Read each of v's w-neighbor flags
+        	  if (Infile != NULL)
+        		  fscanf(Infile, " %1d", &Flag);
+        	  else
+        	  {
+        		  sb_ReadSkipWhitespace(inBuf);
+        		  sscanf(sb_GetReadString(inBuf),  " %1d", &Flag);
+        		  sb_ReadSkipInteger(inBuf);
+        	  }
+
+              // Add the edge (v, w) if the flag is raised
               if (Flag)
               {
                   if (gp_AddEdge(theGraph, v, 0, w, 0) != OK)
@@ -77,20 +102,34 @@ int _ReadAdjMatrix(graphP theGraph, FILE *Infile)
  	 	  NOTOK on file content error (or internal error)
  ********************************************************************/
 
-int  _ReadAdjList(graphP theGraph, FILE *Infile)
+int  _ReadAdjList(graphP theGraph, FILE *Infile, strBufP inBuf)
 {
      int N, v, W, adjList, e, indexValue, ErrorCode;
      int zeroBased = FALSE;
 
-     if (Infile == NULL) return NOTOK;
-     fgetc(Infile);                             /* Skip the N= */
-     fgetc(Infile);
-     fscanf(Infile, " %d ", &N);                /* Read N */
-     if (gp_InitGraph(theGraph, N) != OK)
+     if (Infile == NULL && inBuf == NULL)
+    	 return NOTOK;
+
+     // Skip the "N=" and then read the N value for number of vertices
+     if (Infile != NULL)
      {
-    	  printf("Failed to init graph");
-          return NOTOK;
+         fgetc(Infile);
+         fgetc(Infile);
+         fscanf(Infile, " %d ", &N);
      }
+     else
+     {
+    	 sb_ReadSkipChar(inBuf);
+    	 sb_ReadSkipChar(inBuf);
+     	 sb_ReadSkipWhitespace(inBuf);
+     	 sscanf(sb_GetReadString(inBuf), " %d ", &N);
+     	 sb_ReadSkipInteger(inBuf);
+     	 sb_ReadSkipWhitespace(inBuf);
+     }
+
+     // Initialize theGraph based on the number of vertices in the input
+     if (gp_InitGraph(theGraph, N) != OK)
+          return NOTOK;
 
      // Clear the visited members of the vertices so they can be used
      // during the adjacency list read operation
@@ -101,7 +140,13 @@ int  _ReadAdjList(graphP theGraph, FILE *Infile)
      for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
      {
           // Read the vertex number
-          fscanf(Infile, "%d", &indexValue);
+    	  if (Infile != NULL)
+    		  fscanf(Infile, "%d", &indexValue);
+    	  else
+    	  {
+    		  sscanf(sb_GetReadString(inBuf), "%d", &indexValue);
+    		  sb_ReadSkipInteger(inBuf);
+    	  }
 
           if (indexValue == 0 && v == gp_GetFirstVertex(theGraph))
         	  zeroBased = TRUE;
@@ -114,7 +159,10 @@ int  _ReadAdjList(graphP theGraph, FILE *Infile)
         	  return NOTOK;
 
           // Skip the colon after the vertex number
-          fgetc(Infile);
+          if (Infile != NULL)
+        	  fgetc(Infile);
+          else
+        	  sb_ReadSkipChar(inBuf);
 
           // If the vertex already has a non-empty adjacency list, then it is
           // the result of adding edges during processing of preceding vertices.
@@ -153,7 +201,15 @@ int  _ReadAdjList(graphP theGraph, FILE *Infile)
           while (1)
           {
         	 // Read the value indicating the next adjacent vertex (or the list end)
-             fscanf(Infile, " %d ", &W);
+        	 if (Infile != NULL)
+        		 fscanf(Infile, " %d ", &W);
+        	 else
+        	 {
+             	 sb_ReadSkipWhitespace(inBuf);
+             	 sscanf(sb_GetReadString(inBuf), " %d ", &W);
+             	 sb_ReadSkipInteger(inBuf);
+             	 sb_ReadSkipWhitespace(inBuf);
+        	 }
              W += zeroBased ? gp_GetFirstVertex(theGraph) : 0;
 
              // A value below the valid range indicates the adjacency list end
@@ -328,10 +384,10 @@ int RetVal;
      Ch = (char) fgetc(Infile);
      ungetc(Ch, Infile);
      if (Ch == 'N')
-          RetVal = _ReadAdjList(theGraph, Infile);
+          RetVal = _ReadAdjList(theGraph, Infile, NULL);
      else if (Ch == 'L')
           RetVal = _ReadLEDAGraph(theGraph, Infile);
-     else RetVal = _ReadAdjMatrix(theGraph, Infile);
+     else RetVal = _ReadAdjMatrix(theGraph, Infile, NULL);
 
      if (RetVal == OK)
      {
@@ -372,6 +428,51 @@ int RetVal;
      return RetVal;
 }
 
+/********************************************************************
+ gp_ReadFromString()
+ Populates theGraph using the information stored in inputStr.
+ Supports adjacency list and adjacency matrix formats, not LEDA.
+ Returns NOTOK for any error, or OK otherwise
+ ********************************************************************/
+
+int	 gp_ReadFromString(graphP theGraph, char *inputStr)
+{
+	 int RetVal;
+	 char Ch;
+	 strBufP inBuf = sb_New(0);
+
+	 if (inBuf == NULL)
+		 return NOTOK;
+
+	 if (sb_ConcatString(inBuf, inputStr) != OK)
+	 {
+		 sb_Free(&inBuf);
+		 return NOTOK;
+	 }
+
+     Ch = sb_GetReadString(inBuf)[0];
+     if (Ch == 'N')
+         RetVal = _ReadAdjList(theGraph, NULL, inBuf);
+     else if (Ch == 'L')
+     {
+		 sb_Free(&inBuf);
+		 return NOTOK;
+     }
+     else RetVal = _ReadAdjMatrix(theGraph, NULL, inBuf);
+
+     if (RetVal == OK)
+     {
+    	 char *extraData = sb_GetReadString(inBuf);
+    	 int extraDataLen = extraData == NULL ? 0 : strlen(extraData);
+
+    	 if (extraDataLen > 0)
+    		 RetVal = theGraph->functions.fpReadPostprocess(theGraph, extraData, extraDataLen);
+     }
+
+	 sb_Free(&inBuf);
+	 return RetVal;
+}
+
 int  _ReadPostprocess(graphP theGraph, void *extraData, long extraDataSize)
 {
      return OK;
@@ -384,41 +485,78 @@ int  _ReadPostprocess(graphP theGraph, void *extraData, long extraDataSize)
  vertex is also has indicators of the first and last adjacency nodes (arcs)
  in its adjacency list.
 
- Returns: NOTOK if either param is NULL; OK otherwise (after printing
-                adjacency list representation to Outfile).
+ Returns: NOTOK for parameter errors; OK otherwise.
  ********************************************************************/
 
-int  _WriteAdjList(graphP theGraph, FILE *Outfile)
+int  _WriteAdjList(graphP theGraph, FILE *Outfile, strBufP outBuf)
 {
-	 int v, e;
-	 int zeroBasedOffset = (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstVertex(theGraph) : 0;
+int v, e;
+int zeroBasedOffset = (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? gp_GetFirstVertex(theGraph) : 0;
+char numberStr[128];
 
-     if (theGraph==NULL || Outfile==NULL) return NOTOK;
+     if (theGraph==NULL || (Outfile==NULL && outBuf == NULL))
+    	 return NOTOK;
 
-     fprintf(Outfile, "N=%d\n", theGraph->N);
+     // Write the number of vertices of the graph to the file or string buffer
+     if (Outfile != NULL)
+    	 fprintf(Outfile, "N=%d\n", theGraph->N);
+     else
+     {
+    	 sprintf(numberStr, "N=%d\n", theGraph->N);
+    	 if (sb_ConcatString(outBuf, numberStr) != OK)
+    		 return NOTOK;
+     }
+
+     // Write the adjacency list of each vertex
      for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
      {
-          fprintf(Outfile, "%d:", v - zeroBasedOffset);
+    	  if (Outfile != NULL)
+    		  fprintf(Outfile, "%d:", v - zeroBasedOffset);
+    	  else
+    	  {
+    		  sprintf(numberStr, "%d:", v - zeroBasedOffset);
+    	      if (sb_ConcatString(outBuf, numberStr) != OK)
+    	    	  return NOTOK;
+    	  }
 
           e = gp_GetLastArc(theGraph, v);
           while (gp_IsArc(e))
           {
         	  if (gp_GetDirection(theGraph, e) != EDGEFLAG_DIRECTION_INONLY)
-                  fprintf(Outfile, " %d", gp_GetNeighbor(theGraph, e) - zeroBasedOffset);
+        	  {
+        		  if (Outfile != NULL)
+        			  fprintf(Outfile, " %d", gp_GetNeighbor(theGraph, e) - zeroBasedOffset);
+        		  else
+        		  {
+        			  sprintf(numberStr, " %d", gp_GetNeighbor(theGraph, e) - zeroBasedOffset);
+            	      if (sb_ConcatString(outBuf, numberStr) != OK)
+            	    	  return NOTOK;
+        		  }
+        	  }
 
               e = gp_GetPrevArc(theGraph, e);
           }
 
           // Write NIL at the end of the adjacency list (in zero-based I/O, NIL was -1)
-          fprintf(Outfile, " %d\n", (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? -1 : NIL);
+          if (Outfile != NULL)
+        	  fprintf(Outfile, " %d\n", (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? -1 : NIL);
+          else
+          {
+        	  sprintf(numberStr, " %d\n", (theGraph->internalFlags & FLAGS_ZEROBASEDIO) ? -1 : NIL);
+    	      if (sb_ConcatString(outBuf, numberStr) != OK)
+    	    	  return NOTOK;
+          }
      }
+
      return OK;
 }
 
 /********************************************************************
  _WriteAdjMatrix()
  Outputs upper triangular matrix representation capable of being
- read by _ReadAdjMatrix()
+ read by _ReadAdjMatrix().
+
+ theGraph and one of Outfile or theStrBuf must be non-NULL.
 
  Note: This routine does not support digraphs and will return an
        error if a directed edge is found.
@@ -426,26 +564,36 @@ int  _WriteAdjList(graphP theGraph, FILE *Outfile)
  returns OK for success, NOTOK for failure
  ********************************************************************/
 
-int  _WriteAdjMatrix(graphP theGraph, FILE *Outfile)
+int  _WriteAdjMatrix(graphP theGraph, FILE *Outfile, strBufP outBuf)
 {
 int  v, e, K;
 char *Row = NULL;
+char numberStr[128];
 
-     if (theGraph != NULL)
-         Row = (char *) malloc((theGraph->N+1)*sizeof(char));
+     if (theGraph == NULL || (Outfile == NULL && outBuf == NULL))
+    	 return NOTOK;
 
-     if (Row==NULL || theGraph==NULL || Outfile==NULL)
+     // Write the number of vertices in the graph to the file or string buffer
+     if (Outfile != NULL)
+    	 fprintf(Outfile, "%d\n", theGraph->N);
+     else
      {
-         if (Row != NULL) free(Row);
-         return NOTOK;
+    	 sprintf(numberStr, "%d\n", theGraph->N);
+    	 if (sb_ConcatString(outBuf, numberStr) != OK)
+    		 return NOTOK;
      }
 
-     fprintf(Outfile, "%d\n", theGraph->N);
+     // Allocate memory for storing a string expression of one row at a time
+     Row = (char *) malloc((theGraph->N+2)*sizeof(char));
+     if (Row == NULL)
+         return NOTOK;
+
+     // Construct the upper triangular matrix representation one row at a time
      for (v = gp_GetFirstVertex(theGraph); gp_VertexInRange(theGraph, v); v++)
      {
           for (K = gp_GetFirstVertex(theGraph); K <= v; K++)
                Row[K - gp_GetFirstVertex(theGraph)] = ' ';
-          for (K = v+1; gp_VertexInRange(theGraph, v); K++)
+          for (K = v+1; gp_VertexInRange(theGraph, K); K++)
                Row[K - gp_GetFirstVertex(theGraph)] = '0';
 
           e = gp_GetFirstArc(theGraph, v);
@@ -460,8 +608,14 @@ char *Row = NULL;
               e = gp_GetNextArc(theGraph, e);
           }
 
-          Row[theGraph->N] = '\0';
-          fprintf(Outfile, "%s\n", Row);
+          Row[theGraph->N] = '\n';
+          Row[theGraph->N+1] = '\0';
+
+          // Write the row to the file or string buffer
+          if (Outfile != NULL)
+        	  fprintf(Outfile, "%s", Row);
+          else
+        	  sb_ConcatString(outBuf, Row);
      }
 
      free(Row);
@@ -639,10 +793,10 @@ int RetVal;
      switch (Mode)
      {
          case WRITE_ADJLIST   :
-        	 RetVal = _WriteAdjList(theGraph, Outfile);
+        	 RetVal = _WriteAdjList(theGraph, Outfile, NULL);
              break;
          case WRITE_ADJMATRIX :
-        	 RetVal = _WriteAdjMatrix(theGraph, Outfile);
+        	 RetVal = _WriteAdjMatrix(theGraph, Outfile, NULL);
              break;
          case WRITE_DEBUGINFO :
         	 RetVal = _WriteDebugInfo(theGraph, Outfile);
@@ -672,6 +826,67 @@ int RetVal;
 
      else if (fclose(Outfile) != 0)
          RetVal = NOTOK;
+
+     return RetVal;
+}
+
+/********************************************************************
+ * gp_WriteToString()
+ *
+ * Writes the information of theGraph into a string that is returned
+ * to the caller via the pointer pointer pOutputStr.
+ * The string is owned by the caller and should be released with
+ * free() when the caller doesn't need the string anymore.
+ * The format of the content written into the returned string is based
+ * on the Mode parameter: WRITE_ADJLIST or WRITE_ADJMATRIX
+ * (the WRITE_DEBUGINFO Mode is not supported at this time)
+
+ NOTE: For digraphs, it is an error to use a mode other than WRITE_ADJLIST
+
+ Returns NOTOK on error, or OK on success along with an allocated string
+         *pOutputStr that the caller must free()
+ ********************************************************************/
+int  gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode)
+{
+	 int RetVal;
+	 strBufP outBuf = sb_New(0);
+
+	 if (theGraph == NULL || pOutputStr == NULL || outBuf == NULL)
+	 {
+		 sb_Free(&outBuf);
+	  	 return NOTOK;
+	 }
+
+	 switch (Mode)
+	 {
+	     case WRITE_ADJLIST   :
+	    	  RetVal = _WriteAdjList(theGraph, NULL, outBuf);
+	          break;
+	     case WRITE_ADJMATRIX :
+	          RetVal = _WriteAdjMatrix(theGraph, NULL, outBuf);
+	          break;
+	     default :
+	          RetVal = NOTOK;
+	          break;
+	 }
+
+	 if (RetVal == OK)
+	 {
+	     void *extraData = NULL;
+	     long extraDataSize;
+
+	     RetVal = theGraph->functions.fpWritePostprocess(theGraph, &extraData, &extraDataSize);
+
+	     if (extraData != NULL)
+	     {
+	    	 for (int i = 0; i < extraDataSize; i++)
+	    		 sb_ConcatChar(outBuf, ((char *) extraData)[i]);
+	         free(extraData);
+	     }
+	 }
+
+	 *pOutputStr = sb_TakeString(outBuf);
+	 sb_Free(&outBuf);
 
      return RetVal;
 }

@@ -2,7 +2,7 @@
 #define GRAPH_H
 
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -33,10 +33,13 @@ int		gp_CreateRandomGraphEx(graphP theGraph, int numEdges);
 void	gp_Free(graphP *pGraph);
 
 int		gp_Read(graphP theGraph, char *FileName);
+int		gp_ReadFromString(graphP theGraph, char *inputStr);
+
 #define WRITE_ADJLIST   1
 #define WRITE_ADJMATRIX 2
 #define WRITE_DEBUGINFO 3
 int		gp_Write(graphP theGraph, char *FileName, int Mode);
+int     gp_WriteToString(graphP theGraph, char **pOutputStr, int Mode);
 
 int		gp_IsNeighbor(graphP theGraph, int u, int v);
 int		gp_GetNeighborEdgeRecord(graphP theGraph, int u, int v);

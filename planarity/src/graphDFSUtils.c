@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -29,7 +29,7 @@ extern void _ClearVertexVisitedFlags(graphP theGraph, int);
 int  gp_CreateDFSTree(graphP theGraph)
 {
 stackP theStack;
-int N, DFI, v, uparent, u, e;
+int DFI, v, uparent, u, e;
 
 #ifdef PROFILE
 platform_time start, end;
@@ -41,7 +41,6 @@ platform_GetTime(start);
 
      gp_LogLine("\ngraphDFSUtils.c/gp_CreateDFSTree() start");
 
-     N = theGraph->N;
      theStack  = theGraph->theStack;
 
 /* There are 2M edge records (arcs) and for each we can push 2 integers,

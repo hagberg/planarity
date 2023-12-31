@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -457,8 +457,9 @@ int e, Esize = gp_EdgeIndexBound(theGraph),
     }
 
 	// Expand edgeHoles
-    if ((newStack = sp_New(requiredArcCapacity / 2)) == NULL)
+    if ((newStack = sp_New(requiredArcCapacity / 2)) == NULL) {
     	return NOTOK;
+    }
 
 	sp_CopyContent(newStack, theGraph->edgeHoles);
     sp_Free(&theGraph->edgeHoles);
@@ -1235,7 +1236,7 @@ int N, arc, M, root, v, c, p, last, u, e, EsizeOccupied;
 
         else
 	    {
-            arc = 2*theGraph->M - 2;
+            arc = gp_GetNeighborEdgeRecord(theGraph, u, v);
             gp_SetEdgeType(theGraph, arc, EDGE_TYPE_RANDOMTREE);
             gp_SetEdgeType(theGraph, gp_GetTwinArc(theGraph, arc), EDGE_TYPE_RANDOMTREE);
             gp_ClearEdgeVisited(theGraph, arc);
@@ -1247,7 +1248,7 @@ int N, arc, M, root, v, c, p, last, u, e, EsizeOccupied;
 
     M = numEdges <= 3*N - 6 ? numEdges : 3*N - 6;
 
-    root = 0;
+    root = gp_GetFirstVertex(theGraph);
     v = last = _getUnprocessedChild(theGraph, root);
 
     while (v != root && theGraph->M < M)

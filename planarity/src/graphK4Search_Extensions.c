@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -343,8 +343,9 @@ int  _K4Search_HandleBlockedBicomp(graphP theGraph, int v, int RootVertex, int R
             {
             	// If the Walkdown will be told it is OK to continue, then we have to take the descendant
             	// bicomp root back off the stack so the Walkdown can try to descend to it again.
-            	int dummy;
-            	sp_Pop2(theGraph->theStack, R, dummy);
+            	// The top of stack has the pair R and 0/1 direction Walkdown traversal proceeds from R
+            	// Need only R, so pop and discard the direction, then pop R
+            	sp_Pop2_Discard1(theGraph->theStack, R);
 
             	// And we have to clear the indicator of the minor A that was reduced, since it was eliminated.
             	theGraph->IC.minorType = 0;

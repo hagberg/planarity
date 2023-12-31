@@ -2,7 +2,7 @@
 #define GRAPHSTRUCTURE_H
 
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -11,6 +11,7 @@ See the LICENSE.TXT file for licensing information.
 #include "appconst.h"
 #include "listcoll.h"
 #include "stack.h"
+#include "strbuf.h"
 
 #include "graphFunctionTable.h"
 #include "graphExtensions.private.h"

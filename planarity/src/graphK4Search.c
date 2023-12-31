@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -198,8 +198,9 @@ isolatorContextP IC = &theGraph->IC;
             // Set up to isolate K4 homeomorph
             _ClearVisitedFlags(theGraph);
 
-            if (_FindUnembeddedEdgeToCurVertex(theGraph, IC->w, &IC->dw) != TRUE)
-                return NOTOK;
+            if (_FindUnembeddedEdgeToCurVertex(theGraph, IC->w, &IC->dw) != TRUE) {
+            	return NOTOK;
+            }
 
     		// Isolate the K4 homeomorph
     		if (_MarkHighestXYPath(theGraph) != TRUE ||
@@ -638,8 +639,9 @@ int _K4_FindSeparatingInternalEdge(graphP theGraph, int R, int prevLink, int A, 
 	    }
 
 	    // If we found the separator edge, then we don't need to go on
-	    if (gp_IsVertex(*pX))
+	    if (gp_IsVertex(*pX)) {
 	    	break;
+	    }
 
 		// Go to the next vertex
 		Z = _GetNeighborOnExtFace(theGraph, Z, &ZPrevLink);
@@ -720,8 +722,9 @@ int  _K4_IsolateMinorA1(graphP theGraph)
 	if (_IsolateOuterplanarityObstructionA(theGraph) != OK)
 		return NOTOK;
 
-    if (_AddAndMarkEdge(theGraph, IC->uz, IC->dz) != OK)
-        return NOTOK;
+    if (_AddAndMarkEdge(theGraph, IC->uz, IC->dz) != OK) {
+    	return NOTOK;
+    }
 
 	return OK;
 }
@@ -793,8 +796,9 @@ int  _K4_IsolateMinorB1(graphP theGraph)
     if (_AddAndMarkEdge(theGraph, IC->ux, IC->dx) != OK)
         return NOTOK;
 
-    if (_AddAndMarkEdge(theGraph, IC->uy, IC->dy) != OK)
-        return NOTOK;
+    if (_AddAndMarkEdge(theGraph, IC->uy, IC->dy) != OK) {
+    	return NOTOK;
+    }
 
 	return OK;
 }
@@ -952,8 +956,9 @@ int  _K4_ReducePathComponent(graphP theGraph, K4SearchContext *context, int R, i
 		Z = gp_GetNeighbor(theGraph, e_R);
 		gp_SetEdgeVisited(theGraph, e_R);
 		gp_SetEdgeVisited(theGraph, gp_GetTwinArc(theGraph, e_R));
-	    if (theGraph->functions.fpMarkDFSPath(theGraph, A, Z) != OK)
-	        return NOTOK;
+	    if (theGraph->functions.fpMarkDFSPath(theGraph, A, Z) != OK) {
+	    	return NOTOK;
+	    }
 		edgeType = EDGE_TYPE_BACK;
 	}
 
@@ -1194,8 +1199,9 @@ int  _K4_DeleteUnmarkedEdgesInPathComponent(graphP theGraph, int R, int prevLink
     K4SearchContext *context = NULL;
     gp_FindExtension(theGraph, K4SEARCH_ID, (void *)&context);
 
-    if (context == NULL)
+    if (context == NULL) {
     	return NOTOK;
+    }
 
 	// We need to use the stack to store up the edges we're going to delete.
 	// We want to make sure there is enough stack capacity to handle it,

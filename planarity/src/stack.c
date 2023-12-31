@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -154,6 +154,15 @@ int  sp__Pop(stackP theStack, int *pA)
      return OK;
 }
 
+int  sp__Pop_Discard(stackP theStack)
+{
+     if (theStack->size <= 0)
+         return NOTOK;
+
+     --theStack->size;
+     return OK;
+}
+
 int  sp__Pop2(stackP theStack, int *pA, int *pB)
 {
      if (theStack->size <= 1)
@@ -161,6 +170,31 @@ int  sp__Pop2(stackP theStack, int *pA, int *pB)
 
      *pB = theStack->S[--theStack->size];
      *pA = theStack->S[--theStack->size];
+
+     return OK;
+}
+
+int  sp__Pop2_Discard1(stackP theStack, int *pA)
+{
+     if (theStack->size <= 1)
+         return NOTOK;
+
+     // When a pair of the form (main, secondary) are pushed in order,
+     // it is sometimes necessary to pop the secondary and discard,
+     // then pop and store the main datum.
+     --theStack->size;
+     *pA = theStack->S[--theStack->size];
+
+     return OK;
+}
+
+int  sp__Pop2_Discard(stackP theStack)
+{
+     if (theStack->size <= 1)
+         return NOTOK;
+
+     --theStack->size;
+     --theStack->size;
 
      return OK;
 }

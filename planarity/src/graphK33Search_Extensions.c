@@ -1,5 +1,5 @@
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -249,8 +249,9 @@ int  _K33Search_InitGraph(graphP theGraph, int N)
     K33SearchContext *context = NULL;
     gp_FindExtension(theGraph, K33SEARCH_ID, (void *)&context);
 
-    if (context == NULL)
-        return NOTOK;
+    if (context == NULL) {
+    	return NOTOK;
+    }
 
 	theGraph->N = N;
 	theGraph->NV = N;

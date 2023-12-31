@@ -2,7 +2,7 @@
 #define PLANARITY_H
 
 /*
-Copyright (c) 1997-2015, John M. Boyer
+Copyright (c) 1997-2022, John M. Boyer
 All rights reserved.
 See the LICENSE.TXT file for licensing information.
 */
@@ -27,18 +27,20 @@ void ProjectTitle();
 int helpMessage(char *param);
 
 /* Functions that call the Graph Library */
-int SpecificGraph(char command, char *infileName, char *outfileName, char *outfile2Name);
+int SpecificGraph(
+		char command,
+		char *infileName, char *outfileName, char *outfile2Name,
+		char *inputStr, char **pOutputStr, char **pOutput2Str
+);
 int RandomGraph(char command, int extraEdges, int numVertices, char *outfileName, char *outfile2Name);
 int RandomGraphs(char command, int, int);
-
-int makeg_main(char command, int argc, char *argv[]);
 
 /* Command line, Menu, and Configuration */
 int commandLine(int argc, char *argv[]);
 int legacyCommandLine(int argc, char *argv[]);
 int menu();
 
-char Mode,
+extern char Mode,
      OrigOut,
      EmbeddableOut,
      ObstructedOut,
@@ -49,7 +51,7 @@ void Reconfigure();
 
 /* Low-level Utilities */
 #define MAXLINE 1024
-char Line[MAXLINE];
+extern char Line[MAXLINE];
 
 void Message(char *message);
 void ErrorMessage(char *message);
@@ -58,7 +60,10 @@ void Prompt(char *message);
 
 void SaveAsciiGraph(graphP theGraph, char *filename);
 
+char *ReadTextFileIntoString(char *infileName);
+int  TextFileMatchesString(char *theFilename, char *theString);
 int  TextFilesEqual(char *file1Name, char *file2Name);
+int  BinaryFilesEqual(char *file1Name, char *file2Name);
 
 int GetEmbedFlags(char command);
 char *GetAlgorithmName(char command);
