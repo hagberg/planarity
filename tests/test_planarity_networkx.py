@@ -1,4 +1,5 @@
 import planarity
+from unittest import SkipTest
 
 class TestPlanarityNetworkX:
 
