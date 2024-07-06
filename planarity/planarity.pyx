@@ -56,7 +56,7 @@ cdef class PGraph:
                 seen.add((u,v))
             else:
                 warnings.warn('ignoring parallel edge %s-%s'%(str(u),str(v)))
-        self.embedding=cplanarity.NULL
+        self.embedding=cplanarity.NOTOK
 
 
     def __dealloc__(self):
