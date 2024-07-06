@@ -6,6 +6,7 @@ include README.md
 
 include planarity/cplanarity.pxd
 include planarity/planarity.c
+include planarity/planarity.pyx
 include planarity/src/*.c
 include planarity/src/*.h
 
