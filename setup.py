@@ -65,7 +65,7 @@ setup(
     long_description = long_description,
     license = 'BSD',
     ext_modules = extensions,
-    version          = '0.5',
+    version          = '0.6',
     url = 'https://github.com/hagberg/planarity/',
     download_url='https://pypi.python.org/pypi/planarity',
     package_data = {'planarity':['tests/*.py']},
