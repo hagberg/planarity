@@ -26,7 +26,7 @@ dictoflists = {0: list([1,2,3,4]),
                3: list([4]),
                4: list([])}
 
-print planarity.is_planar(edgelist)  # False
-print planarity.is_planar(dictofdicts) # False
-print planarity.is_planar(dictofsets) # False
-print planarity.is_planar(dictoflists) # False
+print(planarity.is_planar(edgelist))  # False
+print(planarity.is_planar(dictofdicts)) # False
+print(planarity.is_planar(dictofsets)) # False
+print(planarity.is_planar(dictoflists)) # False
