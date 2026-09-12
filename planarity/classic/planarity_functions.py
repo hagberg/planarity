@@ -182,8 +182,10 @@ def mapping(graph) -> dict[int, typing.Any]:
             :py:class:`~planarity.classic.planarity.PGraph`.
 
     Returns:
-        A mapping of the integers assigned to each vertex when initializing the
-        :py:class:`~planarity.classic.planarity.PGraph` to their original label.
+        A mapping between the integers assigned to the vertices, by
+        :py:class:`~planarity.classic.planarity.PGraph` initialization,
+        and their original labels provided to 
+        :py:class:`~planarity.classic.planarity.PGraph` initialization.
 
     Raises:
         ValueError: if the given graph is already a 
