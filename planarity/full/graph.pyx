@@ -747,34 +747,34 @@ cdef class Graph:
         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
 
     def gp_LowerBoundVertices(self) -> int:
-        """Gets the lower bound of the graph's vertex indices.
+        """Gets the lower bound of the graph's vertex indexes.
 
         Returns:
-            The lower bound of the vertex indices.
+            The lower bound of the vertex indexes.
         """
         return graphLib.gp_LowerBoundVertices(self._theGraph)
 
     def gp_UpperBoundVertices(self) -> int:
-        """Gets the upper bound of the graph's vertex indices.
+        """Gets the upper bound of the graph's vertex indexes.
 
         Returns:
-            The upper bound of the vertex indices.
+            The upper bound of the vertex indexes.
         """
         return graphLib.gp_UpperBoundVertices(self._theGraph)
 
     def gp_LowerBoundVirtualVertices(self) -> int:
-        """Gets the lower bound of the graph's virtual vertex indices.
+        """Gets the lower bound of the graph's virtual vertex indexes.
 
         Returns:
-            The lower bound of the virtual vertex indices.
+            The lower bound of the virtual vertex indexes.
         """
         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
 
     def gp_UpperBoundVirtualVertices(self) -> int:
-        """Gets the upper bound of the graph's virtual vertex indices.
+        """Gets the upper bound of the graph's virtual vertex indexes.
 
         Returns:
-            The upper bound of the virtual vertex indices.
+            The upper bound of the virtual vertex indexes.
         """
         return graphLib.gp_UpperBoundVirtualVertices(self._theGraph)
 
@@ -1926,7 +1926,7 @@ cdef class Graph:
     def gp_DepthFirstSearch(self) -> None:
         """Performs a depth-first search (DFS) on the graph.
 
-        Gives vertices a value for their depth first indices (DFIs) and DFS
+        Gives vertices a value for their depth first indexes (DFIs) and DFS
         parents, and gives edges a value for their type. See ``gp_GetParent()``,
         ``gp_GetIndex()``, and ``gp_GetEdgeType()``.
 

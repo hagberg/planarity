@@ -14,7 +14,7 @@ __all__ = [
 
 
 def is_planar(graph):
-    """Returns ``True`` if graph is planar.
+    """Tests whether or not the graph is planar.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
@@ -26,13 +26,24 @@ def is_planar(graph):
             :py:class:`~planarity.classic.planarity.PGraph`.
 
     Returns:
-        ``True`` if the graph is planar, ``False`` if the graph is non-planar.
+        ``True`` if the graph is planar, or ``False`` if not.
+
+    Raises:
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if an error was encountered by C-layer methods such
+            as ``gp_Embed()``.
+        RuntimeError: if a prior invocation of this method already failed.
+        RuntimeError: if any embedding operation was performed other than
+            the one indicated by ``EMBEDFLAGS_PLANAR``.
     """
     return planarity.PGraph(graph).is_planar()
 
 
 def kuratowski_edges(graph):
-    """Returns a list of the edges in a minimal non-planar subgraph of a non-planar graph.
+    """Returns a list of the edges in a minimal non-planar subgraph of the graph.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
@@ -44,8 +55,19 @@ def kuratowski_edges(graph):
             :py:class:`~planarity.classic.planarity.PGraph`.
 
     Returns:
-        Empty list if the graph is planar, or a list of the edges in a
-        minimal non-planar subgraph of a non-planar graph.
+        a list of the edges in a minimal non-planar subgraph of the graph,
+        if it is non-planar, or an empty list if it is planar.
+
+    Raises:
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if an error was encountered by C-layer methods such
+            as ``gp_Embed()``.
+        RuntimeError: if a prior invocation of this method already failed.
+        RuntimeError: if any embedding operation was performed other than
+            the one indicated by ``EMBEDFLAGS_PLANAR``.
     """
     return planarity.PGraph(graph).kuratowski_edges()
 
@@ -69,9 +91,13 @@ def ascii(graph) -> str:
         ValueError: if the given graph is already a 
             :py:class:`~planarity.classic.planarity.PGraph`. 
         RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`, 
-            if the graph is non-planar, or if an error was reported by
-            the C-layer functions for embedding and drawing the graph.
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if an error was encountered by C-layer methods 
+            such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
+        RuntimeError: if a prior invocation of this method already failed.
+        RuntimeError: if any embedding operation was performed other than
+            the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
+        RuntimeError: if the graph is non-planar.
     """
     return planarity.PGraph(graph).ascii()
 
@@ -97,11 +123,15 @@ def draw(graph, labels=True, outfileName=None):
     Raises:
         ValueError: if the given graph is already a 
             :py:class:`~planarity.classic.planarity.PGraph`. 
-        ImportError: if dependencies from Matplotlib fail to be imported.
         RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`, 
-            if the graph is non-planar, or if an error was reported by
-            the C-layer functions for embedding and drawing the graph.
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        ImportError: if dependencies from Matplotlib fail to be imported.
+        RuntimeError: if an error was encountered by C-layer methods 
+            such as ``gp_Embed()``.
+        RuntimeError: if a prior invocation of this method already failed.
+        RuntimeError: if any embedding operation was performed other than
+            the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
+        RuntimeError: if the graph is non-planar.
     """
     pgraph = planarity.PGraph(graph)
 
@@ -128,12 +158,19 @@ def write(graph, path: str = 'stdout') -> None:
             :py:class:`~planarity.classic.planarity.PGraph`.
         path (str):Path to which to write graph. Defaults to ``stdout``
             stream.
+
+    Raises:
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
     planarity.PGraph(graph).write(path)
 
 
 def mapping(graph) -> dict[int, typing.Any]:
-    """Returns the map of internal vertex labels to their original labels.
+    """Returns the map of integer vertex labels to their original labels.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
@@ -147,5 +184,11 @@ def mapping(graph) -> dict[int, typing.Any]:
     Returns:
         A mapping of the integers assigned to each vertex when initializing the
         :py:class:`~planarity.classic.planarity.PGraph` to their original label.
+
+    Raises:
+        ValueError: if the given graph is already a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the graph couldn't be converted to a 
+            :py:class:`~planarity.classic.planarity.PGraph`. 
     """
     return planarity.PGraph(graph).mapping()

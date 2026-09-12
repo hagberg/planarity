@@ -14,13 +14,12 @@ cdef class PGraph:
     """Wraps a C-layer graph data structure instance and retains node label data from the caller.
 
     Attributes:
-        theGraph (``cplanarity.graphP``): The C-layer graph data structure
-            wrapped by the
+        theGraph: The C-layer graph data structure instance wrapped by the
             :py:class:`~planarity.classic.planarity.PGraph`.
         nodemap (dict[typing.Any, int]): the mapping of original labels to the
-            internal vertex indices.
+            internal vertex indexes.
         reverse_nodemap (dict[int, typing.Any]): The mapping of internal vertex
-            indices to their original labels.
+            indexes to their original labels.
         _embedding_workflow_status (int): Indicates the status of the embedding
             workflow; the value is not meaningful until after an embedding
             workflow method such as one of the following has been called:
@@ -44,7 +43,16 @@ cdef class PGraph:
 
         Args:
             graph (networkx.Graph | dict[typing.Any, collections.abc.Iterable[typing.Any]] | list[list[typing.Any] | tuple[typing.Any, typing.Any]]):
-                Input graph to use to populate the C-layer graph data structure.
+                Input graph to use to populate the C-layer graph data structure instance.
+
+        Raises:
+            ValueError: if the given graph is already a 
+                :py:class:`~planarity.classic.planarity.PGraph`.
+            RuntimeError: if the graph couldn't be converted to a 
+                :py:class:`~planarity.classic.planarity.PGraph`. 
+            RuntimeError: if an error was encountered by C-layer methods such
+                as ``gp_New()``, ``gp_EnsureVertexCapacity()``, or 
+                ``gp_DynamicAddEdge()``.
         """
         if isinstance(graph, PGraph):
             raise ValueError(
@@ -128,22 +136,14 @@ cdef class PGraph:
             cplanarity.gp_Free(&self.theGraph)
 
     def embed_planar(self) -> None:
-        """Performs ``Planarity`` embed operation if not yet performed.
-
-        If PLANAR embed operation has been invoked on the graph, immediately
-        returns.
+        """Performs the ``PLANAR`` embed operation, if not yet performed.
 
         Raises:
-            RuntimeError: if the embedding operation for PLANAR has been
-                performed on the graph and the workflow status is NOTOK.
+            RuntimeError: if an error was encountered by C-layer methods such
+                as ``gp_Embed()``.
+            RuntimeError: if a prior invocation of this method already failed.
             RuntimeError: if any embedding operation other than PLANAR has been
                 performed on the graph.
-            RuntimeError: if the graph could not be extended with the necessary
-                structures.
-            RuntimeError: if an error was encountered during the embedding
-                operation.
-            RuntimeError: if we were unable to restore the vertex indices by
-                invoking C-layer ``gp_SortVertices()``.
         """
         cdef int status
         cdef int embedFlags
@@ -161,6 +161,7 @@ cdef class PGraph:
             return
 
         if embedFlags != 0:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
                 "planarity: An incompatible embedding operation has already "
                 "been performed on this graph."
@@ -180,36 +181,27 @@ cdef class PGraph:
         self._embedding_workflow_status = status
 
         if status != cplanarity.OK and status != cplanarity.NONEMBEDDABLE:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError("planarity: Embedding operation failed.")
 
         status = cplanarity.gp_SortVertices(self.theGraph)
         if status != cplanarity.OK:
-            self._embedding_workflow_status = status
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
-                "planarity: Encountered error when restoring vertex indices "
+                "planarity: Encountered error when restoring vertex indexes "
                 "using gp_SortVertices()."
             )
 
     def embed_drawplanar(self) -> None:
-        """Performs ``DrawPlanar`` embed operation if not yet performed.
-
-        If DRAWPLANAR embed operation has been invoked on the graph, immediately
-        returns.
+        """Performs the ``DRAWPLANAR`` embed operation, if not yet performed.
 
         Raises:
-            RuntimeError: If the embedding operation for ``DRAWPLANAR`` has
-                previously been performed on the graph and the graph was
-                determined to be non-planar.
-            RuntimeError: if the embedding operation for ``DRAWPLANAR`` has been
-                performed on the graph and the workflow status is ``NOTOK``.
-            RuntimeError: if any embedding operation other than ``DRAWPLANAR``
+            RuntimeError: if an error was encountered by C-layer methods such
+                as ``gp_Embed()``.
+            RuntimeError: if the given graph is non-planar
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if any embedding operation other than DRAWPLANAR 
                 has been performed on the graph.
-            RuntimeError: if the graph could not be extended with the necessary
-                structures.
-            RuntimeError: if an error was encountered during the embedding
-                operation.
-            RuntimeError: if we were unable to restore the vertex indices by
-                invoking C-layer ``gp_SortVertices()``.
         """
         cdef int status
         cdef int embedFlags
@@ -220,11 +212,13 @@ cdef class PGraph:
                 return
 
             if self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
+                self._embedding_workflow_status = cplanarity.NOTOK
                 raise RuntimeError(
                     "planarity: Graph is non-planar."
                 )
 
         if embedFlags != 0:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
                 "planarity: An incompatible embedding operation has already "
                 "been performed on this graph."
@@ -244,6 +238,7 @@ cdef class PGraph:
         self._embedding_workflow_status = status
 
         if status == cplanarity.NONEMBEDDABLE:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError("planarity: Graph is non-planar.")
 
         if status != cplanarity.OK:
@@ -254,28 +249,26 @@ cdef class PGraph:
 
         status = cplanarity.gp_SortVertices(self.theGraph)
         if status != cplanarity.OK:
-            self._embedding_workflow_status = status
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
-                "planarity: Encountered error when restoring vertex indices "
+                "planarity: Encountered error when restoring vertex indexes "
                 "using gp_SortVertices()."
             )
 
     def is_planar(self) -> bool:
-        """Returns ``True`` if graph is planar.
+        """Tests whether or not the graph is planar.
 
-        If :py:meth:`~planarity.classic.planarity.PGraph.embed_planar` has
-        already been called, then the value of the
-        :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
-        attribute will be the same as from the previous run.
+        Invokes the C-layer ``gp_Embed()`` with the ``EMBEDFLAGS_PLANAR`` flag.
 
         Returns:
-            ``True`` if the graph wrapped by `self` was determined to be
-            planar, ``False`` if the graph is nonembeddable.
+            ``True`` if the graph is planar, or ``False`` if not.
 
         Raises:
-            RuntimeError: if the
-                :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
-                is neither ``OK`` nor ``NONEMBEDDABLE``.
+            RuntimeError: if an error was encountered by C-layer methods such
+                as ``gp_Embed()``.
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if any embedding operation was performed other than
+                the one indicated by ``EMBEDFLAGS_PLANAR``.
         """
         self.embed_planar()
         if self._embedding_workflow_status == cplanarity.OK:
@@ -284,31 +277,24 @@ cdef class PGraph:
         if  self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
             return False
 
-        raise RuntimeError(
-            "planarity: Embedding workflow status indicates an error occured."
-        )
-
     def kuratowski_edges(self) -> list[tuple[typing.Any, typing.Any]] | list[tuple[typing.Any, typing.Any,  dict[str, int]]]:
-        """Returns a list of the edges in a minimal non-planar subgraph of a non-planar graph.
+        """Returns a list of the edges in a minimal non-planar subgraph of the graph.
 
         Returns:
-            Empty list if the graph is planar, or a list of the edges in a
-            minimal non-planar subgraph of a non-planar graph.
+            a list of the edges in a minimal non-planar subgraph of the graph,
+            if it is non-planar, or an empty list if it is planar.
 
         Raises:
-            RuntimeError: if
-                :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
-                is neither ``OK`` nor ``NONEMBEDDABLE``.
+            RuntimeError: if an error was encountered by C-layer methods such
+                as ``gp_Embed()``.
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if any embedding operation was performed other than
+                the one indicated by ``EMBEDFLAGS_PLANAR``.
         """
         if self.is_planar():
             return []
         elif self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
             return self.edges(include_drawplanar_edge_info=False)
-        else:
-            raise RuntimeError(
-                "planarity: Embedding workflow status indicates an error "
-                "occurred."
-            )
 
     def nodes(
         self, include_drawplanar_vertex_info=False
@@ -452,31 +438,24 @@ cdef class PGraph:
         """Produces an ASCII string rendition of the graph, if it is planar.
 
         Returns:
-            The rendition string produced by the C-layer
+            The ASCII string rendition produced by the C-layer method
             ``gp_DrawPlanar_RenderToString()``
 
         Raises:
-            RuntimeError: if the graph is non-planar (i.e.,
-                :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
-                is ``NONEMBEDDABLE``).
-            RuntimeError: if the
-                :py:attr:`~planarity.classic.planarity.PGraph._embedding_workflow_status`
-                is anything other than ``OK``.
-            RuntimeError: if the call to the C-layer
-                ``gp_DrawPlanar_RenderToString()`` failed.
+            RuntimeError: if an error was encountered by C-layer methods 
+                such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if any embedding operation was performed other than
+                the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
+            RuntimeError: if the graph is non-planar.
         """
         cdef int status
         cdef char* s = NULL
 
         self.embed_drawplanar()
 
-        if self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
-            raise RuntimeError(
-                "planarity: Unable to construct planar rendition of non-planar "
-                "graph."
-            )
-
         if self._embedding_workflow_status != cplanarity.OK:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
                 "planarity: Unable to produce planar rendition due to error "
                 "encountered in embedding workflow."
@@ -484,7 +463,7 @@ cdef class PGraph:
 
         status = cplanarity.gp_DrawPlanar_RenderToString(self.theGraph, &s)
         if status != cplanarity.OK:
-            self._embedding_workflow_status = status
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
                 "planarity: Call to gp_DrawPlanar_RenderToString() failed."
             )
@@ -499,7 +478,7 @@ cdef class PGraph:
 
         If the graph is planar, then it is drawn as a figure within
         Matplotlib and then saved to ``outfileName``, if given.
-        
+
         Args:
             labels (bool): If ``True``, vertex labels are rendered in the drawing.
                 Otherwise, vertices are rendered unlabelled in the drawing.
@@ -509,8 +488,12 @@ cdef class PGraph:
 
         Raises:
             ImportError: if dependencies from Matplotlib fail to be imported.
-            RuntimeError: if the graph is non-planar, or if an error was reported
-                by the C-layer functions for embedding and drawing the graph.
+            RuntimeError: if an error was encountered by C-layer methods 
+                such as ``gp_Embed()``.
+            RuntimeError: if a prior invocation of this method already failed.
+            RuntimeError: if any embedding operation was performed other than
+                the one indicated by ``EMBEDFLAGS_DRAWPLANAR``.
+            RuntimeError: if the graph is non-planar.
         """
         try:
             import matplotlib.pyplot as plt
@@ -529,12 +512,8 @@ cdef class PGraph:
 
         self.embed_drawplanar()
 
-        if self._embedding_workflow_status == cplanarity.NONEMBEDDABLE:
-            raise RuntimeError(
-                "planarity: Unable to draw() non-planar graph."
-            )
-
         if self._embedding_workflow_status != cplanarity.OK:
+            self._embedding_workflow_status = cplanarity.NOTOK
             raise RuntimeError(
                 "planarity: Unable to draw() graph due to error encountered in "
                 "embedding workflow."
@@ -597,6 +576,8 @@ cdef class PGraph:
     def write(self, str path='stdout') -> None:
         """Writes the graph to ``path``.
 
+        Currently only supports writing in an adjacency list format.
+        
         Args:
             path (str): Path to which to write graph. Defaults to ``stdout``
                 stream.
@@ -617,11 +598,12 @@ cdef class PGraph:
             )
 
     def mapping(self) -> dict[int, typing.Any]:
-        """Returns the map of internal vertex labels to their original labels.
+        """Returns the map of integer vertex labels to their original labels.
 
         Returns:
-            A mapping of the integers assigned to each vertex when initializing
-            the :py:class:`~planarity.classic.planarity.PGraph` to their
-            original label.
+            A mapping between the integers assigned to the vertices, by
+            :py:class:`~planarity.classic.planarity.PGraph` initialization,
+            and their original labels provided to 
+            :py:class:`~planarity.classic.planarity.PGraph` initialization.
         """
         return self.reverse_nodemap
