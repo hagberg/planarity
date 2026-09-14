@@ -29,10 +29,10 @@ def is_planar(graph):
         ``True`` if the graph is planar, or ``False`` if not.
 
     Raises:
-        ValueError: if the given graph is already a 
+        ValueError: if the given graph is already a
             :py:class:`~planarity.classic.planarity.PGraph`.
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
         RuntimeError: if an error was encountered by C-layer methods such
             as ``gp_Embed()``.
         RuntimeError: if a prior invocation of this method already failed.
@@ -55,14 +55,14 @@ def kuratowski_edges(graph):
             :py:class:`~planarity.classic.planarity.PGraph`.
 
     Returns:
-        a list of the edges in a minimal non-planar subgraph of the graph,
+        A list of the edges in a minimal non-planar subgraph of the graph,
         if it is non-planar, or an empty list if it is planar.
 
     Raises:
-        ValueError: if the given graph is already a 
+        ValueError: if the given graph is already a
             :py:class:`~planarity.classic.planarity.PGraph`.
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
         RuntimeError: if an error was encountered by C-layer methods such
             as ``gp_Embed()``.
         RuntimeError: if a prior invocation of this method already failed.
@@ -88,11 +88,11 @@ def ascii(graph) -> str:
         An ASCII string rendition of a planar graph.
 
     Raises:
-        ValueError: if the given graph is already a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
-        RuntimeError: if an error was encountered by C-layer methods 
+        ValueError: if the given graph is already a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if an error was encountered by C-layer methods
             such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
         RuntimeError: if a prior invocation of this method already failed.
         RuntimeError: if any embedding operation was performed other than
@@ -121,12 +121,12 @@ def draw(graph, labels=True, outfileName=None):
             call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
 
     Raises:
-        ValueError: if the given graph is already a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
+        ValueError: if the given graph is already a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
         ImportError: if dependencies from Matplotlib fail to be imported.
-        RuntimeError: if an error was encountered by C-layer methods 
+        RuntimeError: if an error was encountered by C-layer methods
             such as ``gp_Embed()``.
         RuntimeError: if a prior invocation of this method already failed.
         RuntimeError: if any embedding operation was performed other than
@@ -160,10 +160,10 @@ def write(graph, path: str = 'stdout') -> None:
             stream.
 
     Raises:
-        ValueError: if the given graph is already a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
+        ValueError: if the given graph is already a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
         RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
     planarity.PGraph(graph).write(path)
@@ -184,13 +184,13 @@ def mapping(graph) -> dict[int, typing.Any]:
     Returns:
         A mapping between the integers assigned to the vertices, by
         :py:class:`~planarity.classic.planarity.PGraph` initialization,
-        and their original labels provided to 
+        and their original labels provided to
         :py:class:`~planarity.classic.planarity.PGraph` initialization.
 
     Raises:
-        ValueError: if the given graph is already a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
-        RuntimeError: if the graph couldn't be converted to a 
-            :py:class:`~planarity.classic.planarity.PGraph`. 
+        ValueError: if the given graph is already a
+            :py:class:`~planarity.classic.planarity.PGraph`.
+        RuntimeError: if the graph couldn't be converted to a
+            :py:class:`~planarity.classic.planarity.PGraph`.
     """
     return planarity.PGraph(graph).mapping()

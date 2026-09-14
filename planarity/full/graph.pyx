@@ -782,8 +782,8 @@ cdef class Graph:
         """Gets the lower bound of graph's non-virtual and virtual vertex storage.
 
         .. Note::
-            Use ``gp_LowerBoundVertices()`` unless you know why you're using
-            this.
+            Use :py:meth:`~planarity.full.graph.Graph.gp_LowerBoundVertices`
+            unless you know why you're using this.
 
         Returns:
             The lower bound for all non-virtual and virtual vertices, to be used
@@ -795,8 +795,8 @@ cdef class Graph:
         """Gets the upper bound of graph's non-virtual and virtual vertex storage.
 
         .. Note::
-            Use ``gp_UpperBoundVertices()`` unless you know why you're using
-            this.
+            Use :py:meth:`~planarity.full.graph.Graph.gp_UpperBoundVertices`
+            unless you know why you're using this.
 
         Returns:
             The upper bound for all non-virtual and virtual vertices, to be used

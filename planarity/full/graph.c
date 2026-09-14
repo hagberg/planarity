@@ -11746,7 +11746,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_76gp_SetEdgeByLink(stru
  *         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
  * 
  *     def gp_LowerBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's vertex indices.
+ *         """Gets the lower bound of the graph's vertex indexes.
  * 
 */
 
@@ -11758,7 +11758,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices, "Graph.gp_LowerBoundVertices(self) -> int\n\nGets the lower bound of the graph\047s vertex indices.\n\nReturns:\n    The lower bound of the vertex indices.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices, "Graph.gp_LowerBoundVertices(self) -> int\n\nGets the lower bound of the graph\047s vertex indexes.\n\nReturns:\n    The lower bound of the vertex indexes.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_79gp_LowerBoundVertices = {"gp_LowerBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_79gp_LowerBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_79gp_LowerBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -11804,7 +11804,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices
   __Pyx_RefNannySetupContext("gp_LowerBoundVertices", 0);
 
   /* "planarity/full/graph.pyx":755
- *             The lower bound of the vertex indices.
+ *             The lower bound of the vertex indexes.
  *         """
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)             # <<<<<<<<<<<<<<
  * 
@@ -11830,7 +11830,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices
  *         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
  * 
  *     def gp_LowerBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's vertex indices.
+ *         """Gets the lower bound of the graph's vertex indexes.
  * 
 */
 
@@ -11849,7 +11849,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_78gp_LowerBoundVertices
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's vertex indices.
+ *         """Gets the upper bound of the graph's vertex indexes.
  * 
 */
 
@@ -11861,7 +11861,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices, "Graph.gp_UpperBoundVertices(self) -> int\n\nGets the upper bound of the graph\047s vertex indices.\n\nReturns:\n    The upper bound of the vertex indices.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices, "Graph.gp_UpperBoundVertices(self) -> int\n\nGets the upper bound of the graph\047s vertex indexes.\n\nReturns:\n    The upper bound of the vertex indexes.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_81gp_UpperBoundVertices = {"gp_UpperBoundVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_81gp_UpperBoundVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_81gp_UpperBoundVertices(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -11907,7 +11907,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices
   __Pyx_RefNannySetupContext("gp_UpperBoundVertices", 0);
 
   /* "planarity/full/graph.pyx":763
- *             The upper bound of the vertex indices.
+ *             The upper bound of the vertex indexes.
  *         """
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)             # <<<<<<<<<<<<<<
  * 
@@ -11933,7 +11933,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's vertex indices.
+ *         """Gets the upper bound of the graph's vertex indexes.
  * 
 */
 
@@ -11952,7 +11952,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_80gp_UpperBoundVertices
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_LowerBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's virtual vertex indices.
+ *         """Gets the lower bound of the graph's virtual vertex indexes.
  * 
 */
 
@@ -11964,7 +11964,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualVertices, "Graph.gp_LowerBoundVirtualVertices(self) -> int\n\nGets the lower bound of the graph\047s virtual vertex indices.\n\nReturns:\n    The lower bound of the virtual vertex indices.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualVertices, "Graph.gp_LowerBoundVirtualVertices(self) -> int\n\nGets the lower bound of the graph\047s virtual vertex indexes.\n\nReturns:\n    The lower bound of the virtual vertex indexes.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_83gp_LowerBoundVirtualVertices = {"gp_LowerBoundVirtualVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_83gp_LowerBoundVirtualVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualVertices};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_83gp_LowerBoundVirtualVertices(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -12010,7 +12010,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualV
   __Pyx_RefNannySetupContext("gp_LowerBoundVirtualVertices", 0);
 
   /* "planarity/full/graph.pyx":771
- *             The lower bound of the virtual vertex indices.
+ *             The lower bound of the virtual vertex indexes.
  *         """
  *         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)             # <<<<<<<<<<<<<<
  * 
@@ -12036,7 +12036,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualV
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_LowerBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's virtual vertex indices.
+ *         """Gets the lower bound of the graph's virtual vertex indexes.
  * 
 */
 
@@ -12055,7 +12055,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_82gp_LowerBoundVirtualV
  *         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's virtual vertex indices.
+ *         """Gets the upper bound of the graph's virtual vertex indexes.
  * 
 */
 
@@ -12067,7 +12067,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_84gp_UpperBoundVirtualVertices, "Graph.gp_UpperBoundVirtualVertices(self) -> int\n\nGets the upper bound of the graph\047s virtual vertex indices.\n\nReturns:\n    The upper bound of the virtual vertex indices.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_84gp_UpperBoundVirtualVertices, "Graph.gp_UpperBoundVirtualVertices(self) -> int\n\nGets the upper bound of the graph\047s virtual vertex indexes.\n\nReturns:\n    The upper bound of the virtual vertex indexes.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_85gp_UpperBoundVirtualVertices = {"gp_UpperBoundVirtualVertices", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_85gp_UpperBoundVirtualVertices, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_84gp_UpperBoundVirtualVertices};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_85gp_UpperBoundVirtualVertices(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -12113,7 +12113,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_84gp_UpperBoundVirtualV
   __Pyx_RefNannySetupContext("gp_UpperBoundVirtualVertices", 0);
 
   /* "planarity/full/graph.pyx":779
- *             The upper bound of the virtual vertex indices.
+ *             The upper bound of the virtual vertex indexes.
  *         """
  *         return graphLib.gp_UpperBoundVirtualVertices(self._theGraph)             # <<<<<<<<<<<<<<
  * 
@@ -12139,7 +12139,7 @@ static PyObject *__pyx_pf_9planarity_4full_5graph_5Graph_84gp_UpperBoundVirtualV
  *         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's virtual vertex indices.
+ *         """Gets the upper bound of the graph's virtual vertex indexes.
  * 
 */
 
@@ -12170,7 +12170,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_86gp_LowerBoundVertexStorage, "Graph.gp_LowerBoundVertexStorage(self) -> int\n\nGets the lower bound of graph\047s non-virtual and virtual vertex storage.\n\n.. Note::\n    Use ``gp_LowerBoundVertices()`` unless you know why you\047re using\n    this.\n\nReturns:\n    The lower bound for all non-virtual and virtual vertices, to be used\n    for some types of iteration.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_86gp_LowerBoundVertexStorage, "Graph.gp_LowerBoundVertexStorage(self) -> int\n\nGets the lower bound of graph\047s non-virtual and virtual vertex storage.\n\n.. Note::\n    Use :py:meth:`~planarity.full.graph.Graph.gp_LowerBoundVertices`\n    unless you know why you\047re using this.\n\nReturns:\n    The lower bound for all non-virtual and virtual vertices, to be used\n    for some types of iteration.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_87gp_LowerBoundVertexStorage = {"gp_LowerBoundVertexStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_87gp_LowerBoundVertexStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_86gp_LowerBoundVertexStorage};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_87gp_LowerBoundVertexStorage(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -12273,7 +12273,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_88gp_UpperBoundVertexStorage, "Graph.gp_UpperBoundVertexStorage(self) -> int\n\nGets the upper bound of graph\047s non-virtual and virtual vertex storage.\n\n.. Note::\n    Use ``gp_UpperBoundVertices()`` unless you know why you\047re using\n    this.\n\nReturns:\n    The upper bound for all non-virtual and virtual vertices, to be used\n    for some types of iteration.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_88gp_UpperBoundVertexStorage, "Graph.gp_UpperBoundVertexStorage(self) -> int\n\nGets the upper bound of graph\047s non-virtual and virtual vertex storage.\n\n.. Note::\n    Use :py:meth:`~planarity.full.graph.Graph.gp_UpperBoundVertices`\n    unless you know why you\047re using this.\n\nReturns:\n    The upper bound for all non-virtual and virtual vertices, to be used\n    for some types of iteration.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_89gp_UpperBoundVertexStorage = {"gp_UpperBoundVertexStorage", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_89gp_UpperBoundVertexStorage, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_88gp_UpperBoundVertexStorage};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_89gp_UpperBoundVertexStorage(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -26407,7 +26407,7 @@ PyObject *const *__pyx_args, Py_ssize_t __pyx_nargs, PyObject *__pyx_kwds
 PyObject *__pyx_args, PyObject *__pyx_kwds
 #endif
 ); /*proto*/
-PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_198gp_DepthFirstSearch, "Graph.gp_DepthFirstSearch(self) -> None\n\nPerforms a depth-first search (DFS) on the graph.\n\nGives vertices a value for their depth first indices (DFIs) and DFS\nparents, and gives edges a value for their type. See ``gp_GetParent()``,\n``gp_GetIndex()``, and ``gp_GetEdgeType()``.\n\nThis method also sets ``GRAPHFLAGS_DFSNUMBERED``. This method performs\n``gp_ExtendWith_DFSUtils()`` if not already done.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
+PyDoc_STRVAR(__pyx_doc_9planarity_4full_5graph_5Graph_198gp_DepthFirstSearch, "Graph.gp_DepthFirstSearch(self) -> None\n\nPerforms a depth-first search (DFS) on the graph.\n\nGives vertices a value for their depth first indexes (DFIs) and DFS\nparents, and gives edges a value for their type. See ``gp_GetParent()``,\n``gp_GetIndex()``, and ``gp_GetEdgeType()``.\n\nThis method also sets ``GRAPHFLAGS_DFSNUMBERED``. This method performs\n``gp_ExtendWith_DFSUtils()`` if not already done.\n\nRaises:\n    RuntimeError: if the C-layer ``graphLib`` version of this function\n        fails.");
 static PyMethodDef __pyx_mdef_9planarity_4full_5graph_5Graph_199gp_DepthFirstSearch = {"gp_DepthFirstSearch", (PyCFunction)(void(*)(void))(__Pyx_PyCFunction_FastCallWithKeywords)__pyx_pw_9planarity_4full_5graph_5Graph_199gp_DepthFirstSearch, __Pyx_METH_FASTCALL|METH_KEYWORDS, __pyx_doc_9planarity_4full_5graph_5Graph_198gp_DepthFirstSearch};
 static PyObject *__pyx_pw_9planarity_4full_5graph_5Graph_199gp_DepthFirstSearch(PyObject *__pyx_v_self, 
 #if CYTHON_VECTORCALL
@@ -35196,7 +35196,7 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
  *         graphLib.gp_SetEdgeByLink(self._theGraph, v, theLink, newEdge)
  * 
  *     def gp_LowerBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's vertex indices.
+ *         """Gets the lower bound of the graph's vertex indexes.
  * 
 */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 749, __pyx_L1_error)
@@ -35216,7 +35216,7 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
  *         return graphLib.gp_LowerBoundVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's vertex indices.
+ *         """Gets the upper bound of the graph's vertex indexes.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 757, __pyx_L1_error)
@@ -35236,7 +35236,7 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
  *         return graphLib.gp_UpperBoundVertices(self._theGraph)
  * 
  *     def gp_LowerBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the lower bound of the graph's virtual vertex indices.
+ *         """Gets the lower bound of the graph's virtual vertex indexes.
  * 
 */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 765, __pyx_L1_error)
@@ -35256,7 +35256,7 @@ __Pyx_RefNannySetupContext("PyInit_graph", 0);
  *         return graphLib.gp_LowerBoundVirtualVertices(self._theGraph)
  * 
  *     def gp_UpperBoundVirtualVertices(self) -> int:             # <<<<<<<<<<<<<<
- *         """Gets the upper bound of the graph's virtual vertex indices.
+ *         """Gets the upper bound of the graph's virtual vertex indexes.
  * 
 */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 773, __pyx_L1_error)

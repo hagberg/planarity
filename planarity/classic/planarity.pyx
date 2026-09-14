@@ -46,12 +46,12 @@ cdef class PGraph:
                 Input graph to use to populate the C-layer graph data structure instance.
 
         Raises:
-            ValueError: if the given graph is already a 
+            ValueError: if the given graph is already a
                 :py:class:`~planarity.classic.planarity.PGraph`.
-            RuntimeError: if the graph couldn't be converted to a 
-                :py:class:`~planarity.classic.planarity.PGraph`. 
+            RuntimeError: if the graph couldn't be converted to a
+                :py:class:`~planarity.classic.planarity.PGraph`.
             RuntimeError: if an error was encountered by C-layer methods such
-                as ``gp_New()``, ``gp_EnsureVertexCapacity()``, or 
+                as ``gp_New()``, ``gp_EnsureVertexCapacity()``, or
                 ``gp_DynamicAddEdge()``.
         """
         if isinstance(graph, PGraph):
@@ -200,7 +200,7 @@ cdef class PGraph:
                 as ``gp_Embed()``.
             RuntimeError: if the given graph is non-planar
             RuntimeError: if a prior invocation of this method already failed.
-            RuntimeError: if any embedding operation other than DRAWPLANAR 
+            RuntimeError: if any embedding operation other than ``DRAWPLANAR``
                 has been performed on the graph.
         """
         cdef int status
@@ -281,7 +281,7 @@ cdef class PGraph:
         """Returns a list of the edges in a minimal non-planar subgraph of the graph.
 
         Returns:
-            a list of the edges in a minimal non-planar subgraph of the graph,
+            A list of the edges in a minimal non-planar subgraph of the graph,
             if it is non-planar, or an empty list if it is planar.
 
         Raises:
@@ -442,7 +442,7 @@ cdef class PGraph:
             ``gp_DrawPlanar_RenderToString()``
 
         Raises:
-            RuntimeError: if an error was encountered by C-layer methods 
+            RuntimeError: if an error was encountered by C-layer methods
                 such as ``gp_Embed()`` or ``gp_DrawPlanar_RenderToString()``.
             RuntimeError: if a prior invocation of this method already failed.
             RuntimeError: if any embedding operation was performed other than
@@ -488,7 +488,7 @@ cdef class PGraph:
 
         Raises:
             ImportError: if dependencies from Matplotlib fail to be imported.
-            RuntimeError: if an error was encountered by C-layer methods 
+            RuntimeError: if an error was encountered by C-layer methods
                 such as ``gp_Embed()``.
             RuntimeError: if a prior invocation of this method already failed.
             RuntimeError: if any embedding operation was performed other than
@@ -577,7 +577,7 @@ cdef class PGraph:
         """Writes the graph to ``path``.
 
         Currently only supports writing in an adjacency list format.
-        
+
         Args:
             path (str): Path to which to write graph. Defaults to ``stdout``
                 stream.
@@ -603,7 +603,7 @@ cdef class PGraph:
         Returns:
             A mapping between the integers assigned to the vertices, by
             :py:class:`~planarity.classic.planarity.PGraph` initialization,
-            and their original labels provided to 
+            and their original labels provided to
             :py:class:`~planarity.classic.planarity.PGraph` initialization.
         """
         return self.reverse_nodemap
