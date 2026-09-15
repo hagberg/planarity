@@ -473,6 +473,7 @@ cdef class PGraph:
 
         return py_bytes.decode('ascii')
 
+
     def draw(self, bool labels=True, str outfileName=None) -> None:
         """Draws the graph using Matplotlib, if it is planar.
 
@@ -573,28 +574,30 @@ cdef class PGraph:
         if outfileName:
             plt.savefig(outfileName)
 
-    def write(self, str path='stdout') -> None:
+    def write(self, str path='stdout', int writeMode=cplanarity.WRITE_ADJLIST) -> None:
         """Writes the graph to ``path``.
 
-        Currently only supports writing in an adjacency list format.
+        Supports writing in formats: WRITE_ADJLIST, WRITE_ADJMATRIX, and WRITE_G6.
 
         Args:
             path (str): Path to which to write graph. Defaults to ``stdout``
                 stream.
+            writeMode (int): Format to write the graph. Defaults to
+                ``cplanarity.WRITE_ADJLIST``.
 
         Raises:
             RuntimeError: if the C-layer ``gp_Write()`` failed.
         """
         cdef int status
 
-        bpath=path.encode()
-        status=cplanarity.gp_Write(
-            self.theGraph, bpath, cplanarity.WRITE_ADJLIST
+        bpath = path.encode()
+        status = cplanarity.gp_Write(
+            self.theGraph, bpath, writeMode
         )
         if status != cplanarity.OK:
             raise RuntimeError(
-                "planarity: gp_Write() failed; unable to write graph as "
-                f"adjacency list to '{path}'."
+                "planarity: gp_Write() failed; unable to write graph to "
+                f"'{path}' with writeMode {writeMode}."
             )
 
     def mapping(self) -> dict[int, typing.Any]:
@@ -607,3 +610,4 @@ cdef class PGraph:
             :py:class:`~planarity.classic.planarity.PGraph` initialization.
         """
         return self.reverse_nodemap
+
