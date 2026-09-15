@@ -2,6 +2,7 @@
 import typing
 
 import planarity
+from planarity.full.graphLib import WRITE_ADJLIST
 
 __all__ = [
     'is_planar',
@@ -144,20 +145,22 @@ def draw(graph, labels=True, outfileName=None):
         ) from import_error
 
 
-def write(graph, path: str = 'stdout') -> None:
+def write(graph, path: str = 'stdout', writeMode: int = WRITE_ADJLIST) -> None:
     """Writes the graph to ``path``.
 
     Constructs a
     :py:class:`~planarity.classic.planarity.PGraph`
     and calls its
     :py:meth:`~planarity.classic.planarity.PGraph.write` method with the
-    specified ``path``.
+    specified ``path`` and ``writeMode``.
 
     Args:
         graph: A graph specified in a format that may be converted to a
             :py:class:`~planarity.classic.planarity.PGraph`.
-        path (str):Path to which to write graph. Defaults to ``stdout``
+        path (str): Path to which to write graph. Defaults to ``stdout``
             stream.
+        writeMode (int): Format to write the graph. Defaults to
+            ``WRITE_ADJLIST``.
 
     Raises:
         ValueError: if the given graph is already a
@@ -166,7 +169,8 @@ def write(graph, path: str = 'stdout') -> None:
             :py:class:`~planarity.classic.planarity.PGraph`.
         RuntimeError: if the C-layer ``gp_Write()`` failed.
     """
-    planarity.PGraph(graph).write(path)
+    planarity.PGraph(graph).write(path, writeMode)
+
 
 
 def mapping(graph) -> dict[int, typing.Any]:
