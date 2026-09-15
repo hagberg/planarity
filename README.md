@@ -7,7 +7,7 @@ originally developed to provide Python and
 [NetworkX](https://pypi.org/project/networkx/) developers with a Python API to
 access planar graph testing, embedding, drawing, and forbidden subgraph
 isolation algorithms from the [Edge Addition Planarity Suite
-(EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite). 
+(EAPS)](https://github.com/graph-algorithms/edge-addition-planarity-suite).
 
 The `planarity` repository has now been transferred to the [Github Graph
 Algorithms Organization](https://github.com/graph-algorithms). The `planarity`
@@ -49,7 +49,7 @@ In [10]: P = planarity.PGraph(edgelist)
 In [11]: # Produce mapping of nodes to their original labels
 
 In [12]: print(P.mapping())
-{1: 'e', 2: 'b', 3: 'd', 4: 'a', 5: 'c'}
+{1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e'}
 
 In [13]: # Make text drawing
 
@@ -58,18 +58,24 @@ In [14]: print(P.ascii())
 
 <pre>
 ----1----
-| | |   |
-| | -3--|
-| |  ||||
-| -2--|||
-|  |  |||
----5---||
- |     ||
- ---4----
+|  |    |
+|  --5--|
+|   || ||
+--4--| ||
+ ||  | ||
+ |--2--||
+ |    |||
+ ---3----
+
 </pre>
 
-Note that edge `(a, b)` would correspond to labels `(4, 2)`, which is not
-present in the drawing of this planar graph.
+Note that edge `(a, b)` would correspond to an edge between vertex indexes
+`(1, 2)`, which is not present in the drawing of this planar graph.
+
+Also note that if the vertices are represented by objects that do not support
+the comparison operator, you may not be able to produce the same mapping
+consistently between sessions, since we sort the labels before initializing the
+underlying C graph datastructure instance.
 
 See [here](https://github.com/graph-algorithms/planarity/tree/master/examples)
 for more examples.
@@ -91,7 +97,7 @@ license](https://github.com/graph-algorithms/planarity/blob/master/LICENSE.txt).
 &nbsp;&nbsp;&nbsp;&nbsp;Aric Hagberg <aric.hagberg@gmail.com><br/>
 &nbsp;&nbsp;&nbsp;&nbsp;All rights reserved.<br/>
 
-&nbsp;&nbsp;&nbsp;&nbsp;Planarity includes the Edge Addition Planarity Suite, which is<br/> 
+&nbsp;&nbsp;&nbsp;&nbsp;Planarity includes the Edge Addition Planarity Suite, which is<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;Copyright (c) 1997-2026, John M. Boyer.<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;The BSD-3-Clause license for the Edge Additional Planarity Suite<br/>
 &nbsp;&nbsp;&nbsp;&nbsp;included in Planarity appears [here](https://github.com/graph-algorithms/planarity/blob/master/planarity/c/LICENSE.TXT).
