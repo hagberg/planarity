@@ -21,41 +21,28 @@ applications.
 ## Example
 
 ```python
-In [1]: # Example of the complete graph of 5 nodes, K5, which is not planar.
-
-In [2]: import planarity
-
-In [3]: edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
-   ...:             ('b', 'c'),('b', 'd'),('b', 'e'),
-   ...:             ('c', 'd'), ('c', 'e'),
-   ...:             ('d', 'e')]
-
-In [4]: print(planarity.is_planar(edgelist))
+(.venv) > python
+Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] on win32
+Type "help", "copyright", "credits" or "license" for more information.
+>>> # Example of the complete graph of 5 nodes, K5, which is not planar.
+>>> import planarity
+>>> edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
+                ('b', 'c'),('b', 'd'),('b', 'e'),
+                ('c', 'd'), ('c', 'e'),
+                ('d', 'e')]
+>>> print(planarity.is_planar(edgelist))
 False
-
-In [5]: # Remove an edge to make the graph planar
-
-In [6]: edgelist.remove(('a','b'))
-
-In [7]: print(planarity.is_planar(edgelist))
+>>> # Remove an edge to make the graph planar.
+>>> edgelist.remove(('a','b'))
+>>> print(planarity.is_planar(edgelist))
 True
-
-In [8]: # Make an ascii text drawing
-
-In [9]: # Create single instance of PGraph from edgelist upon which to operate
-
-In [10]: P = planarity.PGraph(edgelist)
-
-In [11]: # Produce mapping of nodes to their original labels
-
-In [12]: print(P.mapping())
+>>> # Produce mapping of nodes to their original labels.
+>>> print(planarity.mapping(edgelist))
 {1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e'}
-
-In [13]: # Make text drawing
-
-In [14]: print(P.ascii())
+>>> # Use planarity convenience functions to make an ascii
+>>> # text drawing of the graph represented by the edgelist.
+>>> print(planarity.ascii(edgelist))
 ```
-
 <pre>
 ----1----
 |  |    |
@@ -71,11 +58,6 @@ In [14]: print(P.ascii())
 
 Note that edge `(a, b)` would correspond to an edge between vertex indexes
 `(1, 2)`, which is not present in the drawing of this planar graph.
-
-Also note that if the vertices are represented by objects that do not support
-the comparison operator, you may not be able to produce the same mapping
-consistently between sessions, since we sort the labels before initializing the
-underlying C graph datastructure instance.
 
 See [here](https://github.com/graph-algorithms/planarity/tree/master/examples)
 for more examples.
