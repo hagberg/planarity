@@ -21,27 +21,33 @@ applications.
 ## Example
 
 ```python
-(.venv) > python
-Python 3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)] on win32
-Type "help", "copyright", "credits" or "license" for more information.
->>> # Example of the complete graph of 5 nodes, K5, which is not planar.
->>> import planarity
->>> edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
-                ('b', 'c'),('b', 'd'),('b', 'e'),
-                ('c', 'd'), ('c', 'e'),
-                ('d', 'e')]
->>> print(planarity.is_planar(edgelist))
+In [1]: # Example of the complete graph of 5 nodes, K5, which is not planar.
+
+In [2]: import planarity
+
+In [3]: edgelist = [('a', 'b'), ('a', 'c'), ('a', 'd'), ('a', 'e'),
+                    ('b', 'c'),('b', 'd'),('b', 'e'),
+                    ('c', 'd'), ('c', 'e'),
+                    ('d', 'e')]
+
+In [4]: print(planarity.is_planar(edgelist))
 False
->>> # Remove an edge to make the graph planar.
->>> edgelist.remove(('a','b'))
->>> print(planarity.is_planar(edgelist))
+
+In [5]: # Remove an edge to make the graph planar
+
+In [6]: edgelist.remove(('a','b'))
+
+In [7]: print(planarity.is_planar(edgelist))
 True
->>> # Produce mapping of nodes to their original labels.
->>> print(planarity.mapping(edgelist))
+
+In [8]: # Show the mapping of node indexes to their original labels
+
+In [9]: print(planarity.mapping(edgelist))
 {1: 'a', 2: 'b', 3: 'c', 4: 'd', 5: 'e'}
->>> # Use planarity convenience functions to make an ascii
->>> # text drawing of the graph represented by the edgelist.
->>> print(planarity.ascii(edgelist))
+
+In [10]: # Draw the graph as text
+
+In [11]: print(planarity.ascii(edgelist))
 ```
 <pre>
 ----1----
@@ -53,7 +59,6 @@ True
  |--2--||
  |    |||
  ---3----
-
 </pre>
 
 Note that edge `(a, b)` would correspond to an edge between vertex indexes
