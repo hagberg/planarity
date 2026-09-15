@@ -498,7 +498,7 @@ cdef class PGraph:
         """
         try:
             import matplotlib.pyplot as plt
-            from matplotlib.patches import Circle
+            from matplotlib.patches import FancyBboxPatch
             from matplotlib.collections import PatchCollection
         except ImportError as matplotlib_import_error:
             raise ImportError(
@@ -525,6 +525,7 @@ cdef class PGraph:
         xs = []
         ys = []
         # Use tuple unpacking for the list of tuples representing nodes
+       
         for node, drawplanar_vertex_info in self.nodes(
             include_drawplanar_vertex_info=True
         ):
@@ -533,10 +534,12 @@ cdef class PGraph:
             xe = drawplanar_vertex_info['vertex_end']
             x = int((xe+xb)/2)
             node_labels[node] = (x, y)
-            patches += [Circle((x, y), 0.25)]  # ,0.5,fc='w')]
+            patches += [FancyBboxPatch(
+                (xb, y - 0.25), xe - xb, 0.5,
+                boxstyle="round,pad=0.05",
+            )]
             xs.extend([xb, xe])
             ys.append(y)
-            plt.hlines([y], [xb], [xe])
 
         # Use tuple unpacking for the list of tuples representing edges
         for (_, _, drawplanar_edge_info) in self.edges(
@@ -569,6 +572,8 @@ cdef class PGraph:
         plt.axis('equal')
         plt.xlim(min(xs)-1, max(xs)+1)
         plt.ylim(min(ys)-1, max(ys)+1)
+        #flipping y axis direction
+        plt.gca().invert_yaxis()
         plt.axis('off')
 
         if outfileName:
