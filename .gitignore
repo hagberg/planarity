@@ -28,3 +28,7 @@ doc/source/api/**
 
 # Ignore Python virtual environments prepended with . and ending with "env"
 **/.*env
+
+# Cythonized extension .c files
+planarity/full/*.c
+planarity/classic/*.c
