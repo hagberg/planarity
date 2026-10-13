@@ -122,9 +122,17 @@ def draw(graph, labels=True, outfileName=None, label_type='default',
             rendering of the planar graph. If not given, then the caller can
             call :external+matplotlib:py:func:`matplotlib.pyplot.savefig`.
         label_type (:obj:`str`): Selects which text identifies each vertex
-            when ``labels`` is ``True``: ``'default'`` or ``'label'`` show the
-            original vertex labels, while ``'index'`` shows the numeric vertex
-            indexes. 
+            when ``labels`` is ``True`` :
+
+            * ``'default'`` - The current behavior, which is to show the
+                original labels given when the graph was converted to a
+                :py:class:`~planarity.express.planarity.PGraph`.
+            * ``'label'`` - Show the original labels.
+            * ``'index'`` - Show the numeric vertex indexes assigned by
+                the :py:class:`~planarity.express.planarity.PGraph`
+                (see :py:meth:`mapping`). 
+
+            Defaults to ``'default'``.
         **kwargs: Optional figure-level parameters forwarded to
             :py:meth:`~planarity.express.planarity.PGraph.draw`. Supported keys
             are:
